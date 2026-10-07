@@ -198,4 +198,5 @@ is ≥ 0.90 and that the per-line table shows which golden examples passed.
 
 | Date | Change | Features affected | Requested by | Approved by |
 |---|---|---|---|---|
-| 2026-10-07 | Initial list | All | — | Sumit |
+| 2026-10-07 | Initial list | All | — |  |
+| 2026-10-07 | Approved | All | — | Sumit |
