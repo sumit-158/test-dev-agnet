@@ -5,7 +5,7 @@
 | PRD | PRD-TODO-001, version 1.0 |
 | Stage | PoC |
 | Status | Approved |
-| Approved by / date | |
+| Approved by / date | Sumit / 2026-10-07 |
 | Planner model | Claude Opus 4.8 (system.ai.claude-opus-4-8) |
 
 ## 1. Solution Summary
