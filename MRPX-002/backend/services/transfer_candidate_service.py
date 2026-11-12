@@ -8,24 +8,33 @@ import re
 from backend.constants import (
     COUNTRY_PATTERN,
     CRITICALITY_VALUES,
+    MATERIAL_PATTERN,
     PAGE_SIZE_MAX,
     PLANT_CODE_PATTERN,
     PRODUCT_FAMILY_PATTERN,
     SORT_COLUMNS,
     SORT_DIRECTIONS,
 )
-from backend.models import CandidateFilters, CandidatePage, FilterOptions
+from backend.models import CandidateFilters, CandidatePage, FilterOptions, MaterialDetail
 from backend.repositories.transfer_candidate_repository import TransferCandidateRepository
 
 logger = logging.getLogger(__name__)
 
 
-def _validate_codes(values: list[str], pattern: str, field: str) -> list[str]:
-    """Upper-case and strip each value; raise ValueError(f"{field} must match {pattern}") on
-    mismatch."""
+class NotFoundError(LookupError):
+    """Raised when no T-01 row exists for the material and short plant."""
+
+
+def _validate_codes(
+    values: list[str], pattern: str, field: str, *, uppercase: bool = True
+) -> list[str]:
+    """Strip (and, unless uppercase is False, upper-case) each value; raise
+    ValueError(f"{field} must match {pattern}") on mismatch."""
     codes = []
     for value in values:
-        code = value.strip().upper()
+        code = value.strip()
+        if uppercase:
+            code = code.upper()
         if not re.fullmatch(pattern, code):
             raise ValueError(f"{field} must match {pattern}")
         codes.append(code)
@@ -75,3 +84,18 @@ def list_candidates(
 def get_filter_options(repo: TransferCandidateRepository) -> FilterOptions:
     """Return the filter options and freshness."""
     return repo.fetch_filter_options()
+
+
+def get_material_detail(
+    repo: TransferCandidateRepository, material: str, short_plant: str
+) -> MaterialDetail:
+    """Validate codes, fetch the detail. Raises NotFoundError(f"Material {material} is not short
+    in plant {short_plant} in the current MRP result.")."""
+    material = _validate_codes([material], MATERIAL_PATTERN, "material", uppercase=False)[0]
+    short_plant = _validate_codes([short_plant], PLANT_CODE_PATTERN, "short_plant")[0]
+    detail = repo.fetch_material_detail(material, short_plant)
+    if detail is None:
+        raise NotFoundError(
+            f"Material {material} is not short in plant {short_plant} in the current MRP result."
+        )
+    return detail
