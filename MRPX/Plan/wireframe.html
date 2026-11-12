@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MRPX-002 Shortage Rebalancing - wireframe (Draft)</title>
+<style>
+:root{
+  --asm-ink:#1A1F36; --asm-navy:#003B5C; --asm-blue:#0E5CAD; --asm-cyan:#00B4D8; --asm-mist:#E6EEF5;
+  --asm-paper:#F7F9FC; --asm-line:#D7DEE8; --asm-muted:#6B7280; --asm-ok:#10B981; --asm-warn:#F59E0B; --asm-err:#EF4444;
+  --asm-ok-text:#047857; --asm-ok-tint:#ECFDF5; --asm-warn-text:#B45309; --asm-warn-tint:#FFFBEB; --asm-err-text:#B91C1C; --asm-err-tint:#FEF2F2;
+  --shadow-card:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--asm-paper);color:var(--asm-ink);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.4}
+a{color:var(--asm-blue)}
+.doc{max-width:1500px;margin:0 auto;padding:24px}
+.doc h1{font-size:24px;font-weight:600;margin:0 0 8px}
+.doc h2{font-size:20px;font-weight:600;margin:40px 0 8px;padding-top:16px;border-top:1px solid var(--asm-line)}
+.doc h3{font-size:16px;font-weight:600;margin:24px 0 8px}
+.meta{display:flex;gap:16px;flex-wrap:wrap;color:var(--asm-muted);margin-bottom:12px}
+.meta b{color:var(--asm-ink);font-weight:500}
+.index{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 24px}
+.index a{padding:8px 12px;border:1px solid var(--asm-line);border-radius:8px;background:#fff;text-decoration:none}
+.brief{background:#fff;border:1px solid var(--asm-line);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow-card)}
+.brief dl{display:grid;grid-template-columns:160px 1fr;gap:4px 16px;margin:0}
+.brief dt{color:var(--asm-muted)}
+.brief dd{margin:0}
+.frames{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.frame-wrap{display:flex;flex-direction:column;gap:6px}
+.frame-label{font-size:12px;color:var(--asm-muted)}
+.scale{overflow:hidden;border:1px solid var(--asm-line);border-radius:8px;background:#fff;box-shadow:var(--shadow-card)}
+.scale.desktop{width:864px;height:540px}
+.scale.tablet{width:614px;height:461px}
+.scale.tablet-tall{width:614px;height:600px}
+.frame{transform:scale(.6);transform-origin:top left;background:var(--asm-paper);color:var(--asm-ink)}
+.frame.desktop{width:1440px;min-height:900px}
+.frame.tablet{width:1024px;min-height:768px}
+.frame.tablet.tall{min-height:1000px}
+/* app shell */
+.hdr{background:var(--asm-navy);color:#fff;display:flex;align-items:center;gap:16px;padding:0 24px;height:56px;font-size:16px}
+.tablet .hdr{height:64px;font-size:18px}
+.logo{border:2px solid #fff;border-radius:4px;padding:2px 8px;font-weight:600;letter-spacing:.5px}
+.hdr .sp{flex:1}
+.hdr .user{font-size:14px;opacity:.9}
+.page{padding:24px}
+.tablet .page{padding:20px}
+.ptitle{font-size:24px;font-weight:600;margin:0 0 4px}
+.fresh{display:flex;align-items:center;gap:12px;color:var(--asm-muted);font-size:14px;margin-bottom:16px}
+.fresh b{color:var(--asm-ink);font-weight:500}
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;white-space:nowrap}
+.tablet .chip{font-size:14px;padding:4px 12px}
+.chip-a{background:var(--asm-err-tint);color:var(--asm-err-text)}
+.chip-b{background:var(--asm-warn-tint);color:var(--asm-warn-text)}
+.chip-c{background:var(--asm-ok-tint);color:var(--asm-ok-text)}
+.chip-mute{background:var(--asm-mist);color:var(--asm-muted)}
+.chip-warn{background:var(--asm-warn-tint);color:var(--asm-warn-text)}
+.card{background:#fff;border:1px solid var(--asm-line);border-radius:12px;box-shadow:var(--shadow-card)}
+.filters{display:flex;gap:16px;align-items:flex-end;padding:16px;margin-bottom:16px;flex-wrap:wrap}
+.fld{display:flex;flex-direction:column;gap:4px;min-width:200px}
+.fld label{font-size:12px;color:var(--asm-muted)}
+.sel{border:1px solid var(--asm-line);border-radius:8px;padding:0 12px;height:44px;display:flex;align-items:center;justify-content:space-between;background:#fff;font-size:14px}
+.tablet .sel{height:48px;font-size:16px}
+.sel .car{color:var(--asm-muted)}
+.toggles{display:flex;gap:8px}
+.tg{border:1px solid var(--asm-line);border-radius:999px;height:44px;padding:0 16px;display:flex;align-items:center;background:#fff;font-size:14px}
+.tablet .tg{height:48px;font-size:16px}
+.tg.on{background:var(--asm-blue);color:#fff;border-color:var(--asm-blue)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 16px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;border:1px solid transparent}
+.tablet .btn{height:48px;font-size:16px}
+.btn-primary{background:var(--asm-blue);color:#fff}
+.btn-outline{border-color:var(--asm-line);background:#fff;color:var(--asm-ink)}
+.btn-ghost{color:var(--asm-blue);background:transparent}
+.count{display:flex;justify-content:space-between;align-items:center;color:var(--asm-muted);margin:0 0 8px;font-size:14px}
+.count b{color:var(--asm-ink);font-weight:500}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{padding:10px 12px;border-bottom:1px solid var(--asm-line);text-align:left;vertical-align:top;font-size:14px}
+.tablet th,.tablet td{font-size:16px;padding:14px 12px}
+th{background:var(--asm-paper);font-weight:500;color:var(--asm-muted);font-size:12px;position:sticky;top:0}
+.tablet th{font-size:14px}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+th.sort{color:var(--asm-blue)}
+tr.row:hover td{background:var(--asm-mist)}
+tr.row td a.rowlink{color:inherit;text-decoration:none;display:block}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
+.tablet .mono{font-size:15px}
+.sub{display:block;color:var(--asm-muted);font-size:12px;margin-top:2px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tablet .sub{white-space:normal;font-size:14px}
+.mov{font-weight:600}
+.bar{height:4px;background:var(--asm-mist);border-radius:2px;margin-top:6px;width:120px;margin-left:auto}
+.bar i{display:block;height:4px;background:var(--asm-cyan);border-radius:2px}
+.pct{font-size:12px;color:var(--asm-muted);display:block;margin-top:2px}
+.omit td{color:var(--asm-muted);font-style:italic;text-align:center}
+.paging{display:flex;justify-content:space-between;align-items:center;padding:12px 0;color:var(--asm-muted)}
+.paging .btns{display:flex;gap:8px}
+.skel{display:block;height:14px;border-radius:4px;background:var(--asm-mist)}
+.state{padding:48px 24px;text-align:left;max-width:520px}
+.state h3{margin:0 0 8px;font-size:16px;font-weight:600}
+.state p{margin:0 0 16px;color:var(--asm-muted)}
+.warnbox{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border:1px solid var(--asm-warn);background:var(--asm-warn-tint);border-radius:8px;margin-bottom:16px;color:var(--asm-warn-text)}
+.ico{display:inline-block;width:16px;height:16px;vertical-align:-3px}
+/* detail */
+.back{display:inline-flex;align-items:center;gap:8px;color:var(--asm-blue);text-decoration:none;margin-bottom:12px;height:44px}
+.dhead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.dhead h2{margin:0;font-size:24px;font-weight:600;border:0;padding:0}
+.dhead .desc{font-size:16px;margin-top:4px}
+.chips{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;padding:16px;margin-bottom:24px}
+.tablet .kv{grid-template-columns:1fr}
+.kv .k{font-size:12px;color:var(--asm-muted)}
+.kv .v{font-size:16px;margin-top:2px}
+.kv .v.big{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.h2{font-size:16px;font-weight:600;margin:0 0 8px}
+.bottombar{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--asm-line);padding:12px 20px;margin:24px -20px -20px}
+.bottombar .btn{width:100%}
+.denied{padding:64px;max-width:560px}
+.notes{color:var(--asm-muted);font-size:13px;margin-top:8px}
+.states{display:flex;gap:24px;flex-wrap:wrap}
+.states .scale.desktop{height:420px}
+.states .frame.desktop{min-height:700px}
+</style>
+</head>
+<body>
+<div class="doc">
+  <h1>MRPX-002 Shortage rebalancing: short in one plant, stock held in another - wireframe</h1>
+  <div class="meta"><span>Project <b>MRPX-002</b></span><span>PRD <b>PRD-MRPX-002 v0.1</b></span><span>TSD <b>TSD-MRPX-002 v1.0</b></span><span>Status <b>Draft</b></span><span>Date <b>2026-11-11</b></span><span>Context library <b>2026.11.04-1</b></span></div>
+  <p>Review wireframe for the Databricks App of TSD §4. Two screens, each with a desktop frame (1440 px, shown at 60 %) and a tablet frame (1024 x 768, shown at 60 %), followed by the states that look different. Data is the PRD §6 golden example and the verified top candidates of plant 3300 (MRP result 2026-08-30, inventory month 2026-08). Rows and links are clickable anchors; there is no logic and no data access.</p>
+  <div class="index">
+    <a href="#scr-01">SCR-01 Transfer candidates</a>
+    <a href="#scr-01-states">SCR-01 states</a>
+    <a href="#scr-02">SCR-02 Material shortage detail</a>
+    <a href="#scr-02-states">SCR-02 states</a>
+    <a href="#app-states">App-level states</a>
+    <a href="#assumptions">Design assumptions</a>
+  </div>
+
+  <!-- ================= SCR-01 ================= -->
+  <h2 id="scr-01">SCR-01 Transfer candidates</h2>
+  <div class="brief">
+    <dl>
+      <dt>User</dt><dd>Supply planner at a plant (daily, from 07:30); team lead reviewing all plants of a country; Head of Supply Chain Planning (weekly review)</dd>
+      <dt>Primary job</dt><dd>Find the short materials of my plant that another plant holds in stock, biggest movable quantity first, and tell the urgent from the large</dd>
+      <dt>Archetype</dt><dd>List / queue with a count line; filters are columns of the gold view T-01</dd>
+      <dt>Primary action</dt><dd>Open a candidate row (to SCR-02). No write action exists: the transfer request happens in SAP (PRD §8)</dd>
+      <dt>User stories</dt><dd>US-1, US-2, US-3, US-4, US-6, US-7</dd>
+      <dt>Features</dt><dd>v2/F-06 (page), v2/F-03 (API-01, API-03), v1/F-01 (T-01)</dd>
+      <dt>Route</dt><dd><span class="mono">/?plant=3300&amp;crit=A,B,C&amp;sort=movable_qty&amp;dir=desc&amp;page=1</span></dd>
+      <dt>The one bold element</dt><dd>The Movable column: bold quantity with a cyan coverage bar (movable as % of the shortage). Everything else is quiet.</dd>
+    </dl>
+  </div>
+
+  <div class="frames">
+    <div class="frame-wrap">
+      <div class="frame-label">Desktop 1440 x 900 - plant 3300 selected, sorted by movable quantity</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <h1 class="ptitle">Transfer candidates</h1>
+          <div class="fresh"><span>MRP result <b>30 Aug 2026</b></span><span>·</span><span>Inventory month <b>Aug 2026</b></span></div>
+          <div class="card filters">
+            <div class="fld"><label>Short plant</label><div class="sel"><span>3300 · ASM Korea Ltd.</span><span class="car">▾</span></div></div>
+            <div class="fld"><label>Country</label><div class="sel"><span>All countries</span><span class="car">▾</span></div></div>
+            <div class="fld"><label>Criticality</label><div class="toggles"><span class="tg on">A</span><span class="tg on">B</span><span class="tg on">C</span><span class="tg">Not set</span></div></div>
+            <div class="fld"><label>Product family</label><div class="sel"><span>All families</span><span class="car">▾</span></div></div>
+            <a class="btn btn-ghost" href="#scr-01">Clear filters</a>
+          </div>
+          <div class="count"><span><b>6,256</b> transfer candidates for ASM Korea Ltd. (3300)</span><span>Showing 1–50 of 6,256</span></div>
+          <div class="card" style="overflow:hidden">
+          <table>
+            <thead><tr>
+              <th>Material</th><th>Criticality</th><th>Family</th><th>Type</th><th>Short plant</th>
+              <th class="num">Shortage</th><th class="num">Weeks late</th><th>Plant holding stock</th><th class="num">Stock</th><th class="num sort">Movable ▾</th>
+            </tr></thead>
+            <tbody>
+              <tr class="row">
+                <td><a class="rowlink" href="#scr-02"><span class="mono">1236-561-01</span><span class="sub">EMI GASKET / SPIRAL / SSN-053W</span></a></td>
+                <td><span class="chip chip-a">Criticality A</span></td><td>PE</td><td>HALB</td>
+                <td><span class="mono">3300</span><span class="sub">ASM Korea Ltd. · KR</span></td>
+                <td class="num">336,233</td><td class="num">9 wk</td>
+                <td><span class="mono">1000</span><span class="sub">UNKNOWN PLANT</span></td>
+                <td class="num">356,500</td>
+                <td class="num"><span class="mov">336,233 MM</span><span class="bar"><i style="width:100%"></i></span><span class="pct">100% of shortage</span></td>
+              </tr>
+              <tr class="row">
+                <td><a class="rowlink" href="#scr-02"><span class="mono">1226-807-01</span><span class="sub">EMI GASKET / SPIRAL / SSN-036W</span></a></td>
+                <td><span class="chip chip-c">Criticality C</span></td><td>CP</td><td>HALB</td>
+                <td><span class="mono">3300</span><span class="sub">ASM Korea Ltd. · KR</span></td>
+                <td class="num">2,035,876</td><td class="num">13 wk</td>
+                <td><span class="mono">3320</span><span class="sub">ASM Korea Ltd. · KR</span></td>
+                <td class="num">60,000</td>
+                <td class="num"><span class="mov">60,000 MM</span><span class="bar"><i style="width:3%"></i></span><span class="pct">3% of shortage</span></td>
+              </tr>
+              <tr class="row">
+                <td><a class="rowlink" href="#scr-02"><span class="mono">1232-405-01</span><span class="sub">EMI GASKET / SPIRAL / SSN-028W</span></a></td>
+                <td><span class="chip chip-a">Criticality A</span></td><td>CP</td><td>HALB</td>
+                <td><span class="mono">3300</span><span class="sub">ASM Korea Ltd. · KR</span></td>
+                <td class="num">55,730</td><td class="num">12 wk</td>
+                <td><span class="mono">3320</span><span class="sub">ASM Korea Ltd. · KR</span></td>
+                <td class="num">60,000</td>
+                <td class="num"><span class="mov">55,730 MM</span><span class="bar"><i style="width:100%"></i></span><span class="pct">100% of shortage</span></td>
+              </tr>
+              <tr class="omit"><td colspan="10">Rows 4–50 omitted in this wireframe (same layout)</td></tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="paging"><span>Showing 1–50 of 6,256</span><span class="btns"><span class="btn btn-outline" style="opacity:.5">Previous</span><a class="btn btn-outline" href="#scr-01">Next</a></span></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="frame-wrap">
+      <div class="frame-label">Tablet 1024 x 768 landscape - filters collapsed, 5 columns, 48 px targets</div>
+      <div class="scale tablet"><div class="frame tablet">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <h1 class="ptitle">Transfer candidates</h1>
+          <div class="fresh"><span>MRP result <b>30 Aug 2026</b></span><span>·</span><span>Inventory month <b>Aug 2026</b></span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <a class="btn btn-outline" href="#scr-01">Filters (1)</a>
+            <span style="color:var(--asm-muted)"><b style="color:var(--asm-ink);font-weight:500">6,256</b> candidates · 3300</span>
+          </div>
+          <div class="card" style="overflow:hidden">
+          <table>
+            <thead><tr><th>Material</th><th>Criticality</th><th>Plant holding stock</th><th class="num sort">Movable ▾</th><th class="num">Weeks late</th></tr></thead>
+            <tbody>
+              <tr class="row"><td><a class="rowlink" href="#scr-02"><span class="mono">1236-561-01</span><span class="sub">EMI GASKET / SPIRAL / SSN-053W</span></a></td><td><span class="chip chip-a">A</span></td><td><span class="mono">1000</span><span class="sub">UNKNOWN PLANT</span></td><td class="num"><span class="mov">336,233 MM</span><span class="pct">of 336,233 · 100%</span></td><td class="num">9 wk</td></tr>
+              <tr class="row"><td><a class="rowlink" href="#scr-02"><span class="mono">1226-807-01</span><span class="sub">EMI GASKET / SPIRAL / SSN-036W</span></a></td><td><span class="chip chip-c">C</span></td><td><span class="mono">3320</span><span class="sub">ASM Korea Ltd.</span></td><td class="num"><span class="mov">60,000 MM</span><span class="pct">of 2,035,876 · 3%</span></td><td class="num">13 wk</td></tr>
+              <tr class="row"><td><a class="rowlink" href="#scr-02"><span class="mono">1232-405-01</span><span class="sub">EMI GASKET / SPIRAL / SSN-028W</span></a></td><td><span class="chip chip-a">A</span></td><td><span class="mono">3320</span><span class="sub">ASM Korea Ltd.</span></td><td class="num"><span class="mov">55,730 MM</span><span class="pct">of 55,730 · 100%</span></td><td class="num">12 wk</td></tr>
+              <tr class="omit"><td colspan="5">Rows 4–50 omitted in this wireframe</td></tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="paging"><span>1–50 of 6,256</span><span class="btns"><span class="btn btn-outline" style="opacity:.5">Previous</span><a class="btn btn-outline" href="#scr-01">Next</a></span></div>
+        </div>
+      </div></div>
+      <div class="notes">Opening "Filters (1)" shows the same four controls stacked in a panel with 48 px heights and a full-width "Apply" is not needed: each change applies at once, as on desktop.</div>
+    </div>
+  </div>
+
+  <h3 id="scr-01-states">SCR-01 states that look different</h3>
+  <div class="states">
+    <div class="frame-wrap">
+      <div class="frame-label">Loading - skeleton rows in the content area, header and filters stay</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <h1 class="ptitle">Transfer candidates</h1>
+          <div class="fresh"><span>MRP result <b>30 Aug 2026</b></span><span>·</span><span>Inventory month <b>Aug 2026</b></span></div>
+          <div class="card filters"><div class="fld"><label>Short plant</label><div class="sel"><span>3300 · ASM Korea Ltd.</span><span class="car">▾</span></div></div><div class="fld"><label>Country</label><div class="sel"><span>All countries</span><span class="car">▾</span></div></div><div class="fld"><label>Criticality</label><div class="toggles"><span class="tg on">A</span><span class="tg on">B</span><span class="tg on">C</span><span class="tg">Not set</span></div></div><div class="fld"><label>Product family</label><div class="sel"><span>All families</span><span class="car">▾</span></div></div></div>
+          <div class="card" style="padding:12px 16px">
+            <span class="skel" style="width:30%;margin:10px 0"></span><span class="skel" style="width:95%;margin:14px 0"></span><span class="skel" style="width:92%;margin:14px 0"></span><span class="skel" style="width:96%;margin:14px 0"></span><span class="skel" style="width:90%;margin:14px 0"></span><span class="skel" style="width:94%;margin:14px 0"></span>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div class="frame-wrap">
+      <div class="frame-label">Empty - the filters match nothing; the way out is one button</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <h1 class="ptitle">Transfer candidates</h1>
+          <div class="fresh"><span>MRP result <b>30 Aug 2026</b></span><span>·</span><span>Inventory month <b>Aug 2026</b></span></div>
+          <div class="card filters"><div class="fld"><label>Short plant</label><div class="sel"><span>3300 · ASM Korea Ltd.</span><span class="car">▾</span></div></div><div class="fld"><label>Country</label><div class="sel"><span>All countries</span><span class="car">▾</span></div></div><div class="fld"><label>Criticality</label><div class="toggles"><span class="tg">A</span><span class="tg">B</span><span class="tg">C</span><span class="tg on">Not set</span></div></div><div class="fld"><label>Product family</label><div class="sel"><span>LT</span><span class="car">▾</span></div></div><a class="btn btn-ghost" href="#scr-01">Clear filters</a></div>
+          <div class="count"><span><b>0</b> transfer candidates for ASM Korea Ltd. (3300)</span></div>
+          <div class="card state"><h3>No transfer candidates match these filters.</h3><p>Plant 3300 has no material with criticality "Not set" in family LT that is short here and in stock in another plant.</p><a class="btn btn-outline" href="#scr-01">Clear filters</a></div>
+        </div>
+      </div></div>
+    </div>
+    <div class="frame-wrap">
+      <div class="frame-label">Error - the warehouse did not answer (API 503); filters are kept</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <h1 class="ptitle">Transfer candidates</h1>
+          <div class="fresh"><span>No MRP result loaded yet</span></div>
+          <div class="card filters"><div class="fld"><label>Short plant</label><div class="sel"><span>3300 · ASM Korea Ltd.</span><span class="car">▾</span></div></div><div class="fld"><label>Country</label><div class="sel"><span>All countries</span><span class="car">▾</span></div></div><div class="fld"><label>Criticality</label><div class="toggles"><span class="tg on">A</span><span class="tg on">B</span><span class="tg on">C</span><span class="tg">Not set</span></div></div><div class="fld"><label>Product family</label><div class="sel"><span>All families</span><span class="car">▾</span></div></div></div>
+          <div class="card state"><h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg> The transfer candidates could not be loaded. Try again.</h3><p>Your filters are kept. If this keeps happening, tell the Supply Chain Analytics team that the SQL warehouse did not answer.</p><a class="btn btn-primary" href="#scr-01">Try again</a></div>
+        </div>
+      </div></div>
+    </div>
+    <div class="frame-wrap">
+      <div class="frame-label">Stale data - MRP result older than yesterday (daily refresh did not run); shown on 2026-11-11</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <h1 class="ptitle">Transfer candidates</h1>
+          <div class="fresh"><span>MRP result <b>30 Aug 2026</b></span><span>·</span><span>Inventory month <b>Aug 2026</b></span><span class="chip chip-warn"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg> 73 days old</span></div>
+          <div class="warnbox"><span>The daily refresh has not run since 30 Aug 2026. The candidates below are from that MRP result.</span></div>
+          <div class="card filters"><div class="fld"><label>Short plant</label><div class="sel"><span>3300 · ASM Korea Ltd.</span><span class="car">▾</span></div></div><div class="fld"><label>Country</label><div class="sel"><span>All countries</span><span class="car">▾</span></div></div><div class="fld"><label>Criticality</label><div class="toggles"><span class="tg on">A</span><span class="tg on">B</span><span class="tg on">C</span><span class="tg">Not set</span></div></div><div class="fld"><label>Product family</label><div class="sel"><span>All families</span><span class="car">▾</span></div></div></div>
+          <div class="count"><span><b>6,256</b> transfer candidates for ASM Korea Ltd. (3300)</span><span>Showing 1–50 of 6,256</span></div>
+          <div class="card" style="padding:12px 16px;color:var(--asm-muted);font-style:italic">Table as in the main frame</div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+  <div class="notes">Long data: descriptions truncate with a tooltip on desktop and wrap on tablet; 0, 1 and 10,000 rows work (paging of 50, at most 200 pages). Keyboard: rows are focusable, Enter opens SCR-02, focus ring 3 px blue. Success and offline states do not apply: the screen has no write action and is used in the office (TSD §16 D-14, assumption A-3 below).</div>
+
+  <!-- ================= SCR-02 ================= -->
+  <h2 id="scr-02">SCR-02 Material shortage detail</h2>
+  <div class="brief">
+    <dl>
+      <dt>User</dt><dd>Supply planner who found a candidate on SCR-01</dd>
+      <dt>Primary job</dt><dd>Recognise the material and see every plant holding stock for this shortage, with how much of the gap each could close</dd>
+      <dt>Archetype</dt><dd>Detail (read-only): header with code and chips, key fields in a two-column grid, related items below</dd>
+      <dt>Primary action</dt><dd>Back to transfer candidates (filters kept). No approve / request action: out of scope (PRD §8)</dd>
+      <dt>User stories</dt><dd>US-2, US-5, US-7</dd>
+      <dt>Features</dt><dd>v2/F-07 (page), v2/F-04 (API-02), v1/F-01 (T-01)</dd>
+      <dt>Route</dt><dd><span class="mono">/materials/1236-561-01/plants/3300</span></dd>
+      <dt>The one bold element</dt><dd>The "Covers" column of the holding plants table (coverage bar), same visual as SCR-01 Movable</dd>
+    </dl>
+  </div>
+
+  <div class="frames">
+    <div class="frame-wrap">
+      <div class="frame-label">Desktop 1440 x 900 - golden example</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <a class="back" href="#scr-01"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#0E5CAD" stroke-width="2"><path d="M19 12H5m7-7-7 7 7 7"/></svg> Back to transfer candidates</a>
+          <div class="dhead">
+            <div>
+              <h2 class="mono" style="font-size:24px">1236-561-01</h2>
+              <div class="desc">EMI GASKET / SPIRAL / SSN-053W</div>
+              <div class="chips"><span class="chip chip-a">Criticality A</span><span class="chip chip-mute">Family PE</span><span class="chip chip-mute">Type HALB</span></div>
+            </div>
+            <div class="fresh" style="margin:0"><span>MRP result <b>30 Aug 2026</b></span><span>·</span><span>Inventory month <b>Aug 2026</b></span></div>
+          </div>
+          <div class="card kv">
+            <div><div class="k">Short plant</div><div class="v"><span class="mono">3300</span> · ASM Korea Ltd. · KR</div></div>
+            <div><div class="k">Shortage</div><div class="v big">336,233 MM</div></div>
+            <div><div class="k">Expected</div><div class="v">9 weeks late</div></div>
+            <div><div class="k">Unit of measure</div><div class="v">MM</div></div>
+          </div>
+          <div class="h2">Plants holding stock (1)</div>
+          <div class="card" style="overflow:hidden">
+          <table>
+            <thead><tr><th>Plant</th><th>Name</th><th>Country</th><th class="num">Stock</th><th class="num">Movable</th><th class="num">Covers</th></tr></thead>
+            <tbody>
+              <tr><td><span class="mono">1000</span></td><td>UNKNOWN PLANT</td><td>—</td><td class="num">356,500</td><td class="num mov">336,233 MM</td><td class="num"><span>100%</span><span class="bar"><i style="width:100%"></i></span></td></tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="notes">Plant 1000 has no row in the plant master (BR-03): it is shown as UNKNOWN PLANT, never dropped. One holding plant can appear for several short plants; this table lists plants for this shortage only (TSD §16 R-01).</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="frame-wrap">
+      <div class="frame-label">Tablet 1024 x 768 - single column, sticky bottom bar with the back action</div>
+      <div class="scale tablet-tall"><div class="frame tablet tall">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <a class="back" href="#scr-01"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#0E5CAD" stroke-width="2"><path d="M19 12H5m7-7-7 7 7 7"/></svg> Back to transfer candidates</a>
+          <h2 class="mono" style="font-size:24px;margin:0;border:0;padding:0">1236-561-01</h2>
+          <div class="desc" style="font-size:16px">EMI GASKET / SPIRAL / SSN-053W</div>
+          <div class="chips"><span class="chip chip-a">Criticality A</span><span class="chip chip-mute">Family PE</span><span class="chip chip-mute">Type HALB</span></div>
+          <div class="fresh" style="margin:12px 0"><span>MRP result <b>30 Aug 2026</b></span><span>·</span><span>Inventory month <b>Aug 2026</b></span></div>
+          <div class="card kv">
+            <div><div class="k">Short plant</div><div class="v"><span class="mono">3300</span> · ASM Korea Ltd. · KR</div></div>
+            <div><div class="k">Shortage</div><div class="v big">336,233 MM</div></div>
+            <div><div class="k">Expected</div><div class="v">9 weeks late</div></div>
+          </div>
+          <div class="h2">Plants holding stock (1)</div>
+          <div class="card" style="overflow:hidden">
+          <table>
+            <thead><tr><th>Plant</th><th class="num">Stock</th><th class="num">Movable</th><th class="num">Covers</th></tr></thead>
+            <tbody><tr><td><span class="mono">1000</span><span class="sub">UNKNOWN PLANT · —</span></td><td class="num">356,500</td><td class="num mov">336,233 MM</td><td class="num">100%<span class="bar" style="width:80px"><i style="width:100%"></i></span></td></tr></tbody>
+          </table>
+          </div>
+          <div class="bottombar"><a class="btn btn-outline" href="#scr-01">Back to transfer candidates</a></div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <h3 id="scr-02-states">SCR-02 states that look different</h3>
+  <div class="states">
+    <div class="frame-wrap">
+      <div class="frame-label">Not found - the material is not short in that plant in the current MRP result (API 404)</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <a class="back" href="#scr-01"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#0E5CAD" stroke-width="2"><path d="M19 12H5m7-7-7 7 7 7"/></svg> Back to transfer candidates</a>
+          <div class="card state"><h3>Not in the current MRP result</h3><p>Material 0000-000-00 is not short in plant 3300 in the current MRP result. The shortage may have been closed since the link was shared.</p><a class="btn btn-outline" href="#scr-01">Back to transfer candidates</a></div>
+        </div>
+      </div></div>
+    </div>
+    <div class="frame-wrap">
+      <div class="frame-label">Blank master data - no description, criticality not set (13 candidate materials today)</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <a class="back" href="#scr-01"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#0E5CAD" stroke-width="2"><path d="M19 12H5m7-7-7 7 7 7"/></svg> Back to transfer candidates</a>
+          <div class="dhead"><div><h2 class="mono" style="font-size:24px">91233-32028</h2><div class="desc" style="color:var(--asm-muted)">No description in the material master</div><div class="chips"><span class="chip chip-mute">Criticality not set</span><span class="chip chip-mute">Family not set</span><span class="chip chip-mute">Type not set</span></div></div><div class="fresh" style="margin:0"><span>MRP result <b>30 Aug 2026</b></span><span>·</span><span>Inventory month <b>Aug 2026</b></span></div></div>
+          <div class="card kv"><div><div class="k">Short plant</div><div class="v"><span class="mono">3020</span> · Nippon Spares · JP</div></div><div><div class="k">Shortage</div><div class="v big">46,248</div></div><div><div class="k">Expected</div><div class="v">0 weeks late</div></div><div><div class="k">Unit of measure</div><div class="v">—</div></div></div>
+          <div class="notes">Illustrative frame for the blank-attribute state: the material code, plants and quantities are real (verified), its master attributes are shown blank to display the state.</div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+  <div class="notes">Loading: skeleton blocks for header, key fields and table (same pattern as SCR-01). Error (503): same block and copy as SCR-01 with "Try again". Long data: 34 holding plants scroll within the page, no paging.</div>
+
+  <!-- ================= APP STATES ================= -->
+  <h2 id="app-states">App-level states</h2>
+  <div class="states">
+    <div class="frame-wrap">
+      <div class="frame-label">Permission - user without CAN USE on the app (Databricks Apps page, outside our code)</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr" style="background:var(--asm-ink)"><span>Databricks</span></div>
+        <div class="denied"><h3 style="font-size:20px;margin:0 0 8px">You do not have access to mrpx-002-transfer-candidates</h3><p style="color:var(--asm-muted)">Ask the Head of Supply Chain Planning to grant you "Can use" on the app. Access is given per planner in the PoC (TSD §8).</p></div>
+      </div></div>
+    </div>
+    <div class="frame-wrap">
+      <div class="frame-label">Permission - the app's service principal has no SELECT on the view (API 503 on every data call)</div>
+      <div class="scale desktop"><div class="frame desktop">
+        <div class="hdr"><span class="logo">ASM</span><span>Shortage rebalancing</span><span class="sp"></span><span class="user">Workspace login</span></div>
+        <div class="page">
+          <h1 class="ptitle">Transfer candidates</h1>
+          <div class="fresh"><span>No MRP result loaded yet</span></div>
+          <div class="card state"><h3>The transfer candidates could not be loaded. Try again.</h3><p>If this keeps happening, the app has not been granted access to the transfer-candidate view yet (v2/F-08 grant step).</p><a class="btn btn-primary" href="#scr-01">Try again</a></div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <h2 id="assumptions">Design assumptions to confirm (also in TSD §16)</h2>
+  <ul>
+    <li><b>A-1</b> One plant at a time on SCR-01 (US-1 "my plant"); the API accepts several plants, the screen offers one select plus the country filter for team leads (US-4).</li>
+    <li><b>A-2</b> No KPI tiles and no sum of movable quantity: the same stock would be counted for several short plants (TSD R-01). The count line shows the number of candidate rows only.</li>
+    <li><b>A-3</b> Office use on desktop and tablet; no shop-floor or offline requirement, so no offline state and 48 px (not 52 px) tablet targets.</li>
+    <li><b>A-4</b> Criticality chips use the status colours only together with the word "Criticality" and the letter; "Not set" is grey.</li>
+    <li><b>A-5</b> Freshness warning threshold: the MRP result is "stale" when older than yesterday (BR-07 daily refresh).</li>
+    <li><b>A-6</b> Material codes keep SAP case; plant codes are shown as 4-character codes with the plant name underneath.</li>
+  </ul>
+</div>
+</body>
+</html>
