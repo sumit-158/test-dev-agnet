@@ -14,6 +14,12 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from backend.config import Settings, load_settings, make_connection_factory
+from backend.constants import ERROR_UNAVAILABLE
+from backend.repositories.transfer_candidate_repository import (
+    DataUnavailableError,
+    TransferCandidateRepository,
+)
+from backend.routers import filters, transfer_candidates
 
 logger = logging.getLogger(__name__)
 
@@ -24,14 +30,23 @@ def create_app(settings: Settings, connection_factory: Callable[[], Any]) -> Fas
     app = FastAPI(title="MRPX-002 Shortage Rebalancing", docs_url=None, redoc_url=None)
     app.state.settings = settings
     app.state.connection_factory = connection_factory
+    app.state.repository = TransferCandidateRepository(settings, connection_factory)
 
     @app.exception_handler(ValueError)
     async def value_error_handler(request: Request, exc: ValueError) -> JSONResponse:
         return JSONResponse(status_code=422, content={"detail": str(exc)})
 
+    @app.exception_handler(DataUnavailableError)
+    async def data_unavailable_handler(request: Request, exc: DataUnavailableError) -> JSONResponse:
+        logger.warning("Data unavailable on %s: %s", request.url.path, type(exc.__cause__).__name__)
+        return JSONResponse(status_code=503, content={"detail": ERROR_UNAVAILABLE})
+
     @app.get("/api/health")
     def health() -> dict[str, str]:
         return {"status": "ok", "catalog": settings.catalog, "schema_gold": settings.schema_gold}
+
+    app.include_router(transfer_candidates.router)
+    app.include_router(filters.router)
 
     static_dir = Path(__file__).parent / "static"
     if static_dir.is_dir():
