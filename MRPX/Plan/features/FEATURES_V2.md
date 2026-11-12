@@ -5,8 +5,8 @@
 | Feature set | v2 — PoC app: Databricks App for the planners |
 | TSD version | TSD-MRPX-002 v1.0 |
 | Source PRD(s) | PRD-MRPX-002 §2, §4 (US-1 … US-7), §4b, §7, §9 |
-| Status | Draft |
-| Approved by / date | |
+| Status | Approved |
+| Approved by / date | Sumit/12-11-2026 |
 | Depends on sets | v1 merged |
 | Context library version | 2026.11.04-1 |
 
