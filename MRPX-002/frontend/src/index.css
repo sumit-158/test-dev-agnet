@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --asm-ink: #1A1F36;
+  --asm-navy: #003B5C;
+  --asm-blue: #0E5CAD;
+  --asm-cyan: #00B4D8;
+  --asm-mist: #E6EEF5;
+  --asm-paper: #F7F9FC;
+  --asm-line: #D7DEE8;
+  --asm-muted: #6B7280;
+  --asm-ok: #10B981;
+  --asm-warn: #F59E0B;
+  --asm-err: #EF4444;
+}
+
+body {
+  background: var(--asm-paper);
+  color: var(--asm-ink);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+@layer components {
+  /* Buttons: 8 px radius, 48 px targets on tablet, 44 px from the 1024 px breakpoint. */
+  .btn-primary {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg bg-asm-blue px-4 text-sm font-medium text-white hover:bg-asm-navy lg:min-h-[44px];
+  }
+
+  .btn-outline {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg border border-asm-line bg-white px-4 text-sm font-medium text-asm-blue hover:bg-asm-mist lg:min-h-[44px];
+  }
+
+  .btn-ghost {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg bg-transparent px-4 text-sm font-medium text-asm-blue hover:bg-asm-mist lg:min-h-[44px];
+  }
+
+  .btn-primary:focus-visible,
+  .btn-outline:focus-visible,
+  .btn-ghost:focus-visible {
+    outline: 3px solid var(--asm-blue);
+    outline-offset: 2px;
+  }
+
+  .card {
+    @apply rounded-xl border border-asm-line bg-white shadow-card;
+  }
+
+  /* Chips: full radius, 14 px text on tablet, 12 px on desktop; always paired with a word. */
+  .chip-ok {
+    @apply inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 text-sm font-medium text-emerald-700 lg:text-xs;
+  }
+
+  .chip-warn {
+    @apply inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-1 text-sm font-medium text-amber-700 lg:text-xs;
+  }
+
+  .chip-err {
+    @apply inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-sm font-medium text-red-700 lg:text-xs;
+  }
+
+  .chip-mute {
+    @apply inline-flex items-center gap-1 rounded-full bg-asm-mist px-2 py-1 text-sm font-medium text-asm-muted lg:text-xs;
+  }
+
+  .chip-crit-a {
+    @apply inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-sm font-medium text-red-700 lg:text-xs;
+  }
+
+  .chip-crit-b {
+    @apply inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-1 text-sm font-medium text-amber-700 lg:text-xs;
+  }
+
+  .chip-crit-c {
+    @apply inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 text-sm font-medium text-emerald-700 lg:text-xs;
+  }
+
+  .focus-ring:focus-visible {
+    outline: 3px solid var(--asm-blue);
+    outline-offset: 2px;
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+}
