@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 
+import MaterialDetailPage from "./pages/MaterialDetailPage";
 import TransferCandidatesPage from "./pages/TransferCandidatesPage";
 
-// Placeholder: v2/F-07 replaces the detail route with MaterialDetailPage (under ./pages/).
 export default function App() {
   return (
     <div className="min-h-screen bg-asm-paper text-asm-ink">
@@ -15,10 +15,7 @@ export default function App() {
       <main className="mx-auto max-w-[1400px] px-6 py-6">
         <Routes>
           <Route path="/" element={<TransferCandidatesPage />} />
-          <Route
-            path="/materials/:material/plants/:shortPlant"
-            element={<div>Material detail</div>}
-          />
+          <Route path="/materials/:material/plants/:shortPlant" element={<MaterialDetailPage />} />
         </Routes>
       </main>
     </div>
