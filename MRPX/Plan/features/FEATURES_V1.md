@@ -5,8 +5,8 @@
 | Feature set | v1 — PoC core data: the governed transfer-candidate view |
 | TSD version | TSD-MRPX-002 v1.0 |
 | Source PRD(s) | PRD-MRPX-002 §3, §4 (US-1, US-2, US-3, US-5, US-7), §4b, §5, §6, §7, §9 |
-| Status | Draft |
-| Approved by / date | |
+| Status | Approved |
+| Approved by / date | Sumit/12-11-2026 |
 | Depends on sets | — |
 | Context library version | 2026.11.04-1 |
 
