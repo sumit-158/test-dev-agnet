@@ -21,9 +21,9 @@
 |---|---|
 | Document | TSD-MRPX-002 |
 | Version | 1.0 |
-| Status | Draft |
+| Status | Approved |
 | Source PRD(s) | PRD-MRPX-002 v0.1 |
-| Approved by / date | |
+| Approved by / date | Sumit/12-11-2026 |
 | Planner model | databricks-claude-fable-5-1 (Fable 5.1) |
 | Feature sets | v1 … v2 (see §14) |
 | Context library version | 2026.11.04-1 |
