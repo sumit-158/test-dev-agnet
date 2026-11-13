@@ -20,6 +20,7 @@ from backend.repositories.transfer_candidate_repository import (
     TransferCandidateRepository,
 )
 from backend.routers import filters, transfer_candidates
+from backend.services.transfer_candidate_service import NotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,10 @@ def create_app(settings: Settings, connection_factory: Callable[[], Any]) -> Fas
     @app.exception_handler(ValueError)
     async def value_error_handler(request: Request, exc: ValueError) -> JSONResponse:
         return JSONResponse(status_code=422, content={"detail": str(exc)})
+
+    @app.exception_handler(NotFoundError)
+    async def not_found_handler(request: Request, exc: NotFoundError) -> JSONResponse:
+        return JSONResponse(status_code=404, content={"detail": str(exc)})
 
     @app.exception_handler(DataUnavailableError)
     async def data_unavailable_handler(request: Request, exc: DataUnavailableError) -> JSONResponse:

@@ -1,0 +1,33 @@
+# MRPX-002 v2/F-08: Asset Bundle deploying the transfer-candidates Databricks App to dev.
+# Deviations from the plan, approved by the Builder:
+# - targets.dev has no `workspace: host:` block: no hard-coded workspace URLs (team rule); the
+#   bundle uses the authenticated CLI profile / DATABRICKS_HOST.
+# - `sync.exclude` keeps frontend/node_modules out of the app source upload; the untracked
+#   frontend build output backend/static/ is still uploaded.
+bundle:
+  name: mrpx-002-shortage-rebalancing
+
+variables:
+  warehouse_id:
+    description: Serverless SQL warehouse the app queries (passed with --var)
+
+sync:
+  exclude:
+    - frontend/node_modules/**
+
+resources:
+  apps:
+    mrpx_002_transfer_candidates:
+      name: mrpx-002-transfer-candidates
+      description: "MRPX-002 Shortage Rebalancing - transfer candidates for supply planners (PoC)"
+      source_code_path: ./
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+
+targets:
+  dev:
+    mode: development
+    default: true
