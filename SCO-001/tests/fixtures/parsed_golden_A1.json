@@ -1,0 +1,68 @@
+[
+  {
+    "element_id": "A1.p1.e1",
+    "type": "title",
+    "content": "QUOTATION",
+    "bbox": [
+      0.08,
+      0.05,
+      0.4,
+      0.08
+    ]
+  },
+  {
+    "element_id": "A1.p1.e2",
+    "type": "text",
+    "content": "Quotation No. BE25112601  Date 2025-11-26",
+    "bbox": [
+      0.08,
+      0.1,
+      0.7,
+      0.12
+    ]
+  },
+  {
+    "element_id": "A1.p1.e3",
+    "type": "table",
+    "content": "<table><tr><th>Part No.</th><th>Description</th><th>Qty</th><th>Unit</th><th>Unit Price</th><th>Currency</th></tr><tr><td>1038-967-34</td><td>RAIL-DIN 35MM X 7.5MM X 450MM LG</td><td>1</td><td>EA</td><td>7,000</td><td>KRW</td></tr><tr><td>1038-967-04</td><td>RAIL-DIN 35MM X 7.5MM X 75MM LG</td><td>1</td><td>EA</td><td>7,000</td><td>KRW</td></tr></table>",
+    "bbox": [
+      0.08,
+      0.3,
+      0.92,
+      0.45
+    ]
+  },
+  {
+    "element_id": "A1.p1.e4",
+    "type": "text",
+    "content": "Country of origin: DE",
+    "bbox": [
+      0.08,
+      0.5,
+      0.4,
+      0.52
+    ]
+  },
+  {
+    "element_id": "A1.p1.e5",
+    "type": "text",
+    "content": "Lead time: 1 week",
+    "bbox": [
+      0.08,
+      0.53,
+      0.4,
+      0.55
+    ]
+  },
+  {
+    "element_id": "A1.p1.e6",
+    "type": "text",
+    "content": "Delivery EXW",
+    "bbox": [
+      0.08,
+      0.56,
+      0.4,
+      0.58
+    ]
+  }
+]

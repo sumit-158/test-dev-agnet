@@ -1,0 +1,292 @@
+{
+  "line_items": [
+    {
+      "doc_type": "PIR",
+      "action": "update",
+      "fields": {
+        "supplier": [
+          {
+            "value": "18570",
+            "segment_id": "M1",
+            "text": "18570",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "material": [
+          {
+            "value": "1038-967-34",
+            "segment_id": "M1",
+            "text": "1038-967-34",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "vendor_material_no": [
+          {
+            "value": "RAIL-DIN 35MM X 7.5MM X 450MM LG",
+            "segment_id": "M1",
+            "text": "RAIL-DIN 35MM X 7.5MM X 450MM LG",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "purchasing_org": [
+          {
+            "value": "3300",
+            "segment_id": "M1",
+            "text": "3300",
+            "derivation": "literal",
+            "computation": null
+          },
+          {
+            "value": "S33",
+            "segment_id": "M1",
+            "text": "S33",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "country_of_origin": [
+          {
+            "value": "KR",
+            "segment_id": "M1",
+            "text": "KR",
+            "derivation": "literal",
+            "computation": null
+          },
+          {
+            "value": "DE",
+            "segment_id": "A1.p1.e4",
+            "text": "Country of origin: DE",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "lead_time_days": [
+          {
+            "value": "7",
+            "segment_id": "M1",
+            "text": "7",
+            "derivation": "literal",
+            "computation": null
+          },
+          {
+            "value": "7",
+            "segment_id": "A1.p1.e5",
+            "text": "1 week",
+            "derivation": "computed",
+            "computation": "1 week x 7 days = 7"
+          }
+        ],
+        "standard_qty": [
+          {
+            "value": "1",
+            "segment_id": "M1",
+            "text": "1",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "amount": [
+          {
+            "value": "7,000",
+            "segment_id": "M1",
+            "text": "7,000",
+            "derivation": "literal",
+            "computation": null
+          },
+          {
+            "value": "7,000",
+            "segment_id": "A1.p1.e3",
+            "text": "7,000",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "currency": [
+          {
+            "value": "KRW",
+            "segment_id": "M1",
+            "text": "KRW",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "pricing_unit": [
+          {
+            "value": "1",
+            "segment_id": "M1",
+            "text": "1",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "unit_of_measure": [
+          {
+            "value": "EA",
+            "segment_id": "M1",
+            "text": "EA",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "valid_from": [
+          {
+            "value": "2025-11-26",
+            "segment_id": "M1",
+            "text": "2025-11-26",
+            "derivation": "literal",
+            "computation": null
+          }
+        ]
+      }
+    },
+    {
+      "doc_type": "PIR",
+      "action": "update",
+      "fields": {
+        "supplier": [
+          {
+            "value": "18570",
+            "segment_id": "M1",
+            "text": "18570",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "material": [
+          {
+            "value": "1038-967-04",
+            "segment_id": "M1",
+            "text": "1038-967-04",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "vendor_material_no": [
+          {
+            "value": "RAIL-DIN 35MM X 7.5MM X 75MM LG",
+            "segment_id": "M1",
+            "text": "RAIL-DIN 35MM X 7.5MM X 75MM LG",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "purchasing_org": [
+          {
+            "value": "3300",
+            "segment_id": "M1",
+            "text": "3300",
+            "derivation": "literal",
+            "computation": null
+          },
+          {
+            "value": "S33",
+            "segment_id": "M1",
+            "text": "S33",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "country_of_origin": [
+          {
+            "value": "KR",
+            "segment_id": "M1",
+            "text": "KR",
+            "derivation": "literal",
+            "computation": null
+          },
+          {
+            "value": "DE",
+            "segment_id": "A1.p1.e4",
+            "text": "Country of origin: DE",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "lead_time_days": [
+          {
+            "value": "7",
+            "segment_id": "M1",
+            "text": "7",
+            "derivation": "literal",
+            "computation": null
+          },
+          {
+            "value": "7",
+            "segment_id": "A1.p1.e5",
+            "text": "1 week",
+            "derivation": "computed",
+            "computation": "1 week x 7 days = 7"
+          }
+        ],
+        "standard_qty": [
+          {
+            "value": "1",
+            "segment_id": "M1",
+            "text": "1",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "amount": [
+          {
+            "value": "7,000",
+            "segment_id": "M1",
+            "text": "7,000",
+            "derivation": "literal",
+            "computation": null
+          },
+          {
+            "value": "7,000",
+            "segment_id": "A1.p1.e3",
+            "text": "7,000",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "currency": [
+          {
+            "value": "KRW",
+            "segment_id": "M1",
+            "text": "KRW",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "pricing_unit": [
+          {
+            "value": "1",
+            "segment_id": "M1",
+            "text": "1",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "unit_of_measure": [
+          {
+            "value": "EA",
+            "segment_id": "M1",
+            "text": "EA",
+            "derivation": "literal",
+            "computation": null
+          }
+        ],
+        "valid_from": [
+          {
+            "value": "2025-11-26",
+            "segment_id": "M1",
+            "text": "2025-11-26",
+            "derivation": "literal",
+            "computation": null
+          }
+        ]
+      }
+    }
+  ],
+  "notes": [
+    "No plant is given in the request.",
+    "No valid-to date is given in the request."
+  ]
+}

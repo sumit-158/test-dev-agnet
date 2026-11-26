@@ -1,0 +1,27 @@
+command: ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+env:
+  - name: CATALOG
+    value: sandbox_others
+  - name: SCHEMA
+    value: sco_001_poc
+  - name: VOLUME_UPLOADS
+    value: /Volumes/sandbox_others/sco_001_poc/uploads
+  - name: VOLUME_DEMO_REQUESTS
+    value: /Volumes/sandbox_others/sco_001_poc/demo_requests
+  - name: WAREHOUSE_ID
+    valueFrom: sql-warehouse
+  - name: ENDPOINT_INTENT
+    value: sco_001_intent
+  - name: ENDPOINT_EXTRACT
+    value: sco_001_extract
+  - name: PROMPT_ALIAS
+    value: production
+  - name: MLFLOW_EXPERIMENT
+    value: /Shared/SCO-001/pir_sl_chat
+  - name: EVAL_TABLE
+    value: sandbox_others.sco_001_poc.eval_pir_sl_extraction_chat
+  - name: TIME_ZONE
+    value: Asia/Singapore
+  - name: LOG_LEVEL
+    value: INFO

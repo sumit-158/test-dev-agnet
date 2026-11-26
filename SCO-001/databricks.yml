@@ -1,0 +1,50 @@
+bundle:
+  name: sco_001_pir_sl_chat
+
+variables:
+  warehouse_id:
+    description: Id of the shared serverless SQL warehouse (app resource sql-warehouse)
+  experiment_id:
+    description: Id of the MLflow experiment /Shared/SCO-001/pir_sl_chat (app resource experiment)
+
+resources:
+  apps:
+    sco_001_pir_sl_chat:
+      name: sco-001-pir-sl-chat
+      description: SCO-001 PIR / Source List chat extraction PoC
+      source_code_path: .
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+        - name: serving-endpoint-intent
+          serving_endpoint:
+            name: sco_001_intent
+            permission: CAN_QUERY
+        - name: serving-endpoint-extract
+          serving_endpoint:
+            name: sco_001_extract
+            permission: CAN_QUERY
+        - name: uc-volume
+          uc_securable:
+            securable_full_name: sandbox_others.sco_001_poc.uploads
+            securable_type: VOLUME
+            permission: WRITE_VOLUME
+        - name: experiment
+          experiment:
+            experiment_id: ${var.experiment_id}
+            permission: CAN_EDIT
+
+targets:
+  dev:
+    # Workspace host is taken from the DATABRICKS_HOST environment variable (not hard-coded).
+    mode: development
+    default: true
+    # Dev workspace ids: Serverless Starter Warehouse and experiment /Shared/SCO-001/pir_sl_chat.
+    variables:
+      warehouse_id: 0311a41d65a98815
+      experiment_id: "1141133459654671"
+  prod:
+    # Declared only; not deployed in the PoC (TSD §10). Deploy only from main.
+    mode: production
