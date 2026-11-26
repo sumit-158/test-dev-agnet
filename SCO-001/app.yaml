@@ -12,9 +12,9 @@ env:
   - name: WAREHOUSE_ID
     valueFrom: sql-warehouse
   - name: ENDPOINT_INTENT
-    value: sco_001_intent
+    value: databricks-gpt-5-4-mini
   - name: ENDPOINT_EXTRACT
-    value: sco_001_extract
+    value: databricks-claude-sonnet-4-5
   - name: PROMPT_ALIAS
     value: production
   - name: MLFLOW_EXPERIMENT

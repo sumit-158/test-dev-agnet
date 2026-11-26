@@ -47,6 +47,18 @@ databricks bundle validate -t dev
 
 The `prod` target is declared but not deployed in the PoC.
 
+### Model endpoints
+
+The app calls the Databricks-hosted model endpoints directly (app resources
+`serving-endpoint-intent` and `serving-endpoint-extract`, CAN QUERY):
+
+- `ENDPOINT_INTENT` = `databricks-gpt-5-4-mini` (AG-02 triage)
+- `ENDPOINT_EXTRACT` = `databricks-claude-sonnet-4-5` (AG-03 / AG-04)
+
+There is no project AI Gateway endpoint in front of them, so there is no automatic fallback, no
+project rate limit and no budget alert. To use the plan's fallback model (`databricks-gpt-5-2`),
+change the env value in `app.yaml` (and the matching resource in `databricks.yml`).
+
 ## Evaluate
 
 Evaluation scripts are added in later features (`evals/`).
