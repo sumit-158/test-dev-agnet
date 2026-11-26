@@ -5,8 +5,8 @@
 | Feature set | v3 — PoC operations: run it for 10 stewards |
 | TSD version | TSD-SCO-001 v1.0 |
 | Source PRD(s) | PRD-SCO-001 v0.1 §2, §7 (cost < USD 200 per month), §9 (confidentiality) |
-| Status | Draft |
-| Approved by / date | |
+| Status | Approved |
+| Approved by / date | Sumit/26-11-2026 |
 | Depends on sets | v2 merged |
 | Context library version | 2026.11.24-1 |
 
