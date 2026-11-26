@@ -5,8 +5,8 @@
 | Feature set | v1 — PoC walking skeleton: AI core on the demo requests |
 | TSD version | TSD-SCO-001 v1.0 |
 | Source PRD(s) | PRD-SCO-001 v0.1 §3, §4 (US-2, US-3, US-4, US-6, US-8), §5, §6, §7, §9 |
-| Status | Draft |
-| Approved by / date | |
+| Status | Approved |
+| Approved by / date | Sumit/26-11-2026 |
 | Depends on sets | — |
 | Context library version | 2026.11.24-1 |
 
