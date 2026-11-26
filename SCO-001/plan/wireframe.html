@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SCO-001 wireframe — PIR / SL request chat (Draft)</title>
+<style>
+/* Tokens: skill ui_ux_design section 3. Every colour below is one of these variables. --asm-white is the card surface
+   the skill calls "white"; tints are made with color-mix from the tokens. */
+:root{
+  --asm-ink:#1A1F36; --asm-navy:#003B5C; --asm-blue:#0E5CAD; --asm-cyan:#00B4D8; --asm-mist:#E6EEF5;
+  --asm-paper:#F7F9FC; --asm-line:#D7DEE8; --asm-muted:#6B7280; --asm-ok:#10B981; --asm-warn:#F59E0B; --asm-err:#EF4444;
+  --asm-white:#FFFFFF;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--asm-ink);background:var(--asm-mist);font-size:14px;line-height:1.4}
+a{color:var(--asm-blue)}
+.doc{max-width:1500px;margin:0 auto;padding:24px}
+.doc h1{font-size:24px;margin:0 0 4px}
+.doc h2{font-size:20px;margin:40px 0 8px}
+.doc h3{font-size:16px;margin:24px 0 8px}
+.meta{color:var(--asm-muted);margin-bottom:12px}
+.index a{margin-right:16px}
+.note{background:var(--asm-white);border:1px solid var(--asm-line);border-radius:12px;padding:12px 16px;margin:8px 0 16px}
+.note table{border-collapse:collapse;width:100%}
+.note td,.note th{text-align:left;padding:4px 8px;border-bottom:1px solid var(--asm-line);vertical-align:top}
+.state-label{font-size:12px;color:var(--asm-muted);margin:12px 0 4px;text-transform:none}
+/* Desktop frame 1440 x 900, scaled to 0.62 */
+.frame-wrap{width:893px;height:558px;overflow:hidden;border:1px solid var(--asm-line);border-radius:12px;background:var(--asm-paper);margin-bottom:8px;box-shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.10)}
+.frame{width:1440px;height:900px;transform:scale(0.62);transform-origin:top left;background:var(--asm-paper);position:relative;overflow:hidden;font-size:14px}
+.frame-wrap.short{height:372px}.frame.short{height:600px}
+/* App chrome */
+.hdr{height:56px;background:var(--asm-navy);color:var(--asm-white);display:flex;align-items:center;padding:0 24px;gap:16px}
+.hdr .brand{font-weight:600;letter-spacing:.5px}
+.hdr .app{font-weight:500}
+.hdr .spacer{flex:1}
+.hdr .user{font-size:13px;opacity:.9}
+.hdr .ghost{border:1px solid rgba(255,255,255,.6);color:var(--asm-white);background:transparent;border-radius:8px;height:36px;padding:0 12px;font:inherit;font-size:13px}
+.grid{display:grid;grid-template-columns:2fr 3fr;height:844px}
+.pane{display:flex;flex-direction:column;min-width:0}
+.pane.left{border-right:1px solid var(--asm-line);background:var(--asm-white)}
+.pane.right{background:var(--asm-paper);padding:16px 24px;overflow:hidden}
+.chat{flex:1;overflow:hidden;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.bubble{max-width:92%;border-radius:12px;padding:10px 12px;border:1px solid var(--asm-line);background:var(--asm-paper)}
+.bubble.user{align-self:flex-end;background:var(--asm-mist);border-color:var(--asm-mist)}
+.bubble.assistant{align-self:flex-start;background:var(--asm-white)}
+.bubble .who{font-size:12px;color:var(--asm-muted);margin-bottom:4px}
+.bubble pre{margin:6px 0 0;font:12px/1.5 "JetBrains Mono",ui-monospace,monospace;white-space:pre;overflow:hidden}
+mark{background:color-mix(in srgb,var(--asm-warn) 45%,var(--asm-white));outline:2px solid var(--asm-warn);border-radius:2px;padding:0 2px;color:var(--asm-ink)}
+.attcard{display:flex;gap:10px;align-items:center;border:1px solid var(--asm-line);border-radius:8px;padding:8px;background:var(--asm-white);width:420px}
+.thumb{width:44px;height:58px;background:var(--asm-mist);border:1px solid var(--asm-line);border-radius:4px;position:relative}
+.thumb:after{content:"";position:absolute;left:6px;right:6px;top:10px;height:3px;background:var(--asm-line);box-shadow:0 8px 0 var(--asm-line),0 16px 0 var(--asm-line),0 24px 0 var(--asm-line)}
+.attcard .nm{font-weight:500;font-size:13px}
+.attcard .sub{font-size:12px;color:var(--asm-muted)}
+.composer{border-top:1px solid var(--asm-line);padding:12px 20px;background:var(--asm-white)}
+.textarea{border:1px solid var(--asm-line);border-radius:8px;min-height:96px;padding:10px;color:var(--asm-muted);background:var(--asm-white)}
+.textarea.filled{color:var(--asm-ink)}
+.row{display:flex;gap:8px;align-items:center;margin-top:8px}
+.btn{height:44px;padding:0 16px;border-radius:8px;font:inherit;font-weight:500;border:1px solid transparent;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.btn.primary{background:var(--asm-blue);color:var(--asm-white)}
+.btn.primary[aria-disabled="true"]{background:var(--asm-line);color:var(--asm-muted)}
+.btn.outline{border-color:var(--asm-blue);color:var(--asm-blue);background:var(--asm-white)}
+.btn.ghost{color:var(--asm-blue);background:transparent}
+.btn.sm{height:32px;padding:0 10px;font-size:13px}
+.err-inline{color:var(--asm-err);font-size:13px;margin-top:6px;display:flex;gap:8px;align-items:center}
+.hint{color:var(--asm-muted);font-size:13px}
+.counter{margin-left:auto;font-size:12px;color:var(--asm-muted)}
+/* right pane */
+.rhead{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.rhead h2{font-size:20px;margin:0;font-weight:600}
+.select{border:1px solid var(--asm-line);border-radius:8px;height:40px;padding:0 12px;display:inline-flex;align-items:center;gap:8px;background:var(--asm-white);min-width:180px}
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:500;color:var(--asm-ink)}
+.chip.ok{background:color-mix(in srgb,var(--asm-ok) 15%,var(--asm-white))}
+.chip.warn{background:color-mix(in srgb,var(--asm-warn) 18%,var(--asm-white))}
+.chip.err{background:color-mix(in srgb,var(--asm-err) 15%,var(--asm-white))}
+.chip.mute{background:var(--asm-mist);color:var(--asm-muted)}
+.chip i{display:inline-block;width:12px;height:12px;border-radius:50%;}
+.chip.ok i{background:var(--asm-ok)}.chip.warn i{background:var(--asm-warn)}.chip.err i{background:var(--asm-err)}.chip.mute i{background:var(--asm-muted)}
+.cards{overflow:hidden;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--asm-white);border:1px solid var(--asm-line);border-radius:12px;padding:12px 16px}
+.card .ch{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.card .ch b{font-weight:600}
+.card .ch .sp{flex:1}
+.fields{display:grid;grid-template-columns:1fr 1fr;column-gap:24px;row-gap:2px}
+.f{display:grid;grid-template-columns:150px 1fr;align-items:center;min-height:30px;border-bottom:1px solid var(--asm-line);font-size:13px}
+.f .l{color:var(--asm-muted)}
+.f .v{display:flex;align-items:center;gap:8px}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px}
+.num{font-variant-numeric:tabular-nums}
+.src{width:18px;height:18px;border:1px solid var(--asm-line);border-radius:4px;display:inline-block;position:relative;margin-left:auto}
+.src:after{content:"";position:absolute;inset:4px;border:1.5px solid var(--asm-blue);border-radius:2px}
+.cands{grid-column:1/3;font-size:12px;color:var(--asm-muted);padding:4px 0 6px 150px;display:flex;gap:16px;align-items:center}
+.cands span{color:var(--asm-ink)}
+.skel{height:14px;border-radius:4px;background:var(--asm-mist);margin:8px 0}
+.skel.w60{width:60%}.skel.w40{width:40%}.skel.w80{width:80%}
+.empty{color:var(--asm-muted);text-align:center;margin-top:120px;font-size:15px}
+.calc{font-size:11px;background:var(--asm-mist);border-radius:4px;padding:0 4px;color:var(--asm-muted)}
+.editing{border:2px solid var(--asm-blue);border-radius:6px;padding:2px 6px;background:var(--asm-white)}
+.toast{position:absolute;right:24px;bottom:24px;background:var(--asm-ink);color:var(--asm-white);border-radius:8px;padding:10px 14px;font-size:13px}
+/* viewer */
+.viewer{height:520px;border-bottom:1px solid var(--asm-line);display:flex;flex-direction:column;background:var(--asm-paper)}
+.vh{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--asm-line);background:var(--asm-white);font-size:13px}
+.vh .sp{flex:1}
+.seg{display:inline-flex;border:1px solid var(--asm-line);border-radius:8px;overflow:hidden}
+.seg span{padding:4px 10px;font-size:12px}
+.seg span.on{background:var(--asm-blue);color:var(--asm-white)}
+.vbody{flex:1;overflow:hidden;display:flex;justify-content:center;padding:12px}
+.page{width:310px;height:438px;background:var(--asm-white);border:1px solid var(--asm-line);position:relative;font-size:8px;color:var(--asm-muted);padding:18px}
+.page .t{position:absolute;left:10%;right:10%;height:5px;background:var(--asm-line)}
+.page .tbl{position:absolute;left:8%;right:8%;top:30%;height:15%;border:1px solid var(--asm-line);display:grid;grid-template-rows:1fr 1fr 1fr}
+.page .tbl div{border-bottom:1px solid var(--asm-line);display:grid;grid-template-columns:1.1fr 2.4fr .5fr .5fr .9fr .6fr;align-items:center;padding:0 2px;font-size:7px;color:var(--asm-ink);white-space:nowrap;overflow:hidden}
+.box{position:absolute;border:2px solid var(--asm-warn);background:color-mix(in srgb,var(--asm-warn) 25%,transparent)}
+.box label{position:absolute;top:-14px;left:-2px;font-size:8px;background:var(--asm-warn);color:var(--asm-ink);padding:0 3px;border-radius:2px;white-space:nowrap}
+.popover{position:absolute;background:var(--asm-white);border:1px solid var(--asm-line);border-radius:12px;box-shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.10);padding:10px 12px;font-size:13px;width:360px}
+.popover .r{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--asm-line)}
+.popover .r:last-child{border-bottom:0}
+.popover .r .sp{flex:1}
+/* modal */
+.scrim{position:absolute;inset:0;background:rgba(26,31,54,.45);display:flex;align-items:center;justify-content:center}
+.modal{width:620px;background:var(--asm-white);border-radius:12px;padding:20px 24px;box-shadow:0 8px 24px rgba(16,24,40,.25)}
+.modal h3{margin:0 0 12px;font-size:20px}
+.radio{display:flex;gap:16px;margin-bottom:12px}
+.radio span{display:inline-flex;align-items:center;gap:6px}
+.radio i{width:16px;height:16px;border-radius:50%;border:2px solid var(--asm-line);display:inline-block}
+.radio i.on{border-color:var(--asm-blue);box-shadow:inset 0 0 0 3px var(--asm-white),inset 0 0 0 8px var(--asm-blue)}
+.pre{background:var(--asm-paper);border:1px solid var(--asm-line);border-radius:8px;padding:10px;font:11.5px/1.5 "JetBrains Mono",ui-monospace,monospace;white-space:pre;overflow:hidden;height:150px}
+.modal .row{justify-content:flex-end}
+.center{position:absolute;inset:56px 0 0 0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--asm-muted);font-size:16px}
+</style>
+</head>
+<body>
+<div class="doc">
+<h1>SCO-001 — PIR / Source List Request Chat — wireframe</h1>
+<div class="meta">PRD-SCO-001 v0.1 · TSD-SCO-001 v1.0 · <b>Status: Draft</b> · 2026-11-26 · Desktop 1440 × 900 only (the PRD names no tablet or mobile device) · frames scaled to 62 %</div>
+<div class="index"><a href="#scr-01">SCR-01 Request workspace</a><a href="#scr-02">SCR-02 Attachment viewer</a><a href="#scr-03">SCR-03 Export dialog</a><a href="#flow">Flow</a></div>
+
+<div class="note">
+<table>
+<tr><th>Screen</th><th>Name</th><th>Archetype</th><th>Primary action</th><th>User stories</th><th>Features</th></tr>
+<tr><td>SCR-01</td><td>Request workspace — chat left, request type and line items right</td><td>Review / approve + Form</td><td>Send (chat); Export (result)</td><td>US-1 … US-5, US-8, US-9</td><td>v2/F-06, v2/F-07</td></tr>
+<tr><td>SCR-02</td><td>Attachment viewer — page image with yellow source boxes</td><td>Detail</td><td>Close</td><td>US-6, US-7</td><td>v2/F-08</td></tr>
+<tr><td>SCR-03</td><td>Export dialog — JSON or CSV</td><td>Form</td><td>Download</td><td>US-10</td><td>v2/F-07</td></tr>
+</table>
+<p class="hint" id="flow"><b>Flow:</b> SCR-01 (send) → SCR-01 ready → click <i>Show source</i> → SCR-02 (opens in the left pane above the chat) → Close → SCR-01 → Export → SCR-03 → Download → SCR-01. Data below is the PRD §6 golden example (GE-001); no personal data.</p>
+</div>
+
+<!-- ================= SCR-01 ================= -->
+<h2 id="scr-01">SCR-01 — Request workspace</h2>
+<div class="note">
+<b>User:</b> SCO procurement data steward (desk, desktop). <b>Primary job:</b> decide whether the extraction is right and correct it in a few clicks.
+<b>User stories:</b> US-1 chat with attachments and later messages; US-2 request type first; US-3/US-4 line items with the PRD fields; US-5 split screen; US-8 conflicts; US-9 corrections by edit or chat.
+<b>Features:</b> v2/F-06 (shell, chat pane), v2/F-07 (line-item cards, edit, export button). <b>The one bold element:</b> the status word on every value (Missing / Conflict / Corrected) — everything else stays quiet.
+</div>
+
+<div class="state-label">State: ready — golden example extracted (default)</div>
+<div class="frame-wrap"><div class="frame">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid">
+    <div class="pane left">
+      <div class="chat">
+        <div class="bubble user"><div class="who">You · M1 · 2025-11-26 09:12</div>Could you update PIR data as below part, I attached supplier quotation
+<pre>Supplier  Vendor Material No.  Material                           Prog.  Pur.Grp  C/R  PDT  Qty  Amount  Curr  PU  UoM  Valid-From
+18570     1038-967-34          RAIL-DIN 35MM X 7.5MM X 450MM LG   3300   S33      KR   7    1    <mark>7,000</mark>   KRW   1   EA   2025-11-26
+18570     1038-967-04          RAIL-DIN 35MM X 7.5MM X 75MM LG    3300   S33      KR   7    1    7,000   KRW   1   EA   2025-11-26</pre></div>
+        <a class="attcard" href="#scr-02"><span class="thumb"></span><span><span class="nm">BE25112601_RAIL-DIN 35MM X 7.5MM.pdf</span><br><span class="sub">1 page · </span><span class="chip ok"><i></i>Read</span></span></a>
+        <div class="bubble assistant"><div class="who">Assistant · M2</div>Request type: <b>Update PIR</b>. Found 2 line items. Plant is not given in the request or the quotation, so it stays empty. C/R. of Origin differs between the table (KR) and the quotation (DE).</div>
+      </div>
+      <div class="composer">
+        <div class="textarea">Type a message, for example “line 2 amount is 8000”</div>
+        <div class="row"><a class="btn outline sm" href="#scr-01">Attach files</a><span class="hint">PDF, PNG, JPG · up to 10 files, 20 pages each</span><span class="counter">0 / 20000</span><a class="btn primary" aria-disabled="true" href="#scr-01">Send</a></div>
+      </div>
+    </div>
+    <div class="pane right">
+      <div class="rhead"><span class="select"><b>Update PIR</b> ▾</span><span class="hint">2 line items</span><span class="spacer" style="flex:1"></span><a class="btn primary" href="#scr-03">Export</a></div>
+      <div class="cards">
+        <div class="card">
+          <div class="ch"><b>Line 1 · PIR · Update</b><span class="sp"></span><a class="btn ghost sm" href="#scr-01">Remove line</a></div>
+          <div class="fields">
+            <div class="f"><span class="l">Supplier</span><span class="v mono">18570<span class="src" title="Show source"></span></span></div>
+            <div class="f"><span class="l">Vendor Material No.</span><span class="v mono">1038-967-34<span class="src"></span></span></div>
+            <div class="f"><span class="l">Material</span><span class="v">RAIL-DIN 35MM X 7.5MM X 450MM LG<span class="src"></span></span></div>
+            <div class="f"><span class="l">Plant</span><span class="v"><span class="chip warn"><i></i>Missing</span></span></div>
+            <div class="f"><span class="l">Purchasing Org.</span><span class="v num">3300<span class="src"></span></span></div>
+            <div class="f"><span class="l">C/R. of Origin</span><span class="v">KR <span class="chip warn"><i></i>Conflict</span><span class="src"></span></span></div>
+            <div class="cands">Candidates: <span>KR</span> · message M1 <a class="btn ghost sm" href="#scr-01">Use</a> &nbsp; <span>DE</span> · quotation p.1 <a class="btn ghost sm" href="#scr-01">Use</a></div>
+            <div class="f"><span class="l">Pl. Deliv. Time</span><span class="v num">7 d (1.0 wk)<span class="src"></span></span></div>
+            <div class="f"><span class="l">Standard Qty</span><span class="v num">1<span class="src"></span></span></div>
+            <div class="f"><span class="l">Amount</span><span class="v num">7000<span class="src" title="Show source"></span></span></div>
+            <div class="f"><span class="l">Cond. Currency</span><span class="v">KRW<span class="src"></span></span></div>
+            <div class="f"><span class="l">Pricing Unit</span><span class="v num">1<span class="src"></span></span></div>
+            <div class="f"><span class="l">Unit of Measure</span><span class="v">EA<span class="src"></span></span></div>
+            <div class="f"><span class="l">Valid-From Date</span><span class="v num">2025-11-26<span class="src"></span></span></div>
+            <div class="f"><span class="l">Valid To Date</span><span class="v"><span class="chip warn"><i></i>Missing</span></span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><b>Line 2 · PIR · Update</b><span class="sp"></span><a class="btn ghost sm" href="#scr-01">Remove line</a></div>
+          <div class="fields">
+            <div class="f"><span class="l">Supplier</span><span class="v mono">18570<span class="src"></span></span></div>
+            <div class="f"><span class="l">Vendor Material No.</span><span class="v mono">1038-967-04<span class="src"></span></span></div>
+            <div class="f"><span class="l">Material</span><span class="v">RAIL-DIN 35MM X 7.5MM X 75MM LG<span class="src"></span></span></div>
+            <div class="f"><span class="l">Plant</span><span class="v"><span class="chip warn"><i></i>Missing</span></span></div>
+            <div class="f"><span class="l">Purchasing Org.</span><span class="v num">3300<span class="src"></span></span></div>
+            <div class="f"><span class="l">C/R. of Origin</span><span class="v">KR <span class="chip warn"><i></i>Conflict</span><span class="src"></span></span></div>
+            <div class="f"><span class="l">Pl. Deliv. Time</span><span class="v num">7 d (1.0 wk)<span class="src"></span></span></div>
+            <div class="f"><span class="l">Standard Qty</span><span class="v num">1<span class="src"></span></span></div>
+            <div class="f"><span class="l">Amount</span><span class="v num">7000<span class="src"></span></span></div>
+            <div class="f"><span class="l">Cond. Currency</span><span class="v">KRW<span class="src"></span></span></div>
+            <div class="f"><span class="l">Pricing Unit</span><span class="v num">1<span class="src"></span></span></div>
+            <div class="f"><span class="l">Unit of Measure</span><span class="v">EA<span class="src"></span></span></div>
+            <div class="f"><span class="l">Valid-From Date</span><span class="v num">2025-11-26<span class="src"></span></span></div>
+            <div class="f"><span class="l">Valid To Date</span><span class="v"><span class="chip warn"><i></i>Missing</span></span></div>
+          </div>
+        </div>
+        <div class="row"><a class="btn outline sm" href="#scr-01">Add PIR line</a><a class="btn outline sm" href="#scr-01">Add SL line</a></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<p class="hint">Click a value's source icon → popover (see SCR-02). Double-click a value to edit in place. Field labels are the PRD §4 labels literally (TSD Q-03).</p>
+
+<div class="state-label">State: empty — new session</div>
+<div class="frame-wrap short"><div class="frame short">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid" style="height:544px">
+    <div class="pane left">
+      <div class="chat"><div class="empty">Type the request and attach the quotation (PDF, PNG or JPG).<br>Then press Send.</div></div>
+      <div class="composer"><div class="textarea">Type the request…</div>
+        <div class="row"><a class="btn outline sm" href="#scr-01">Attach files</a><span class="hint">PDF, PNG, JPG · up to 10 files, 20 pages each</span><span class="counter">0 / 20000</span><a class="btn primary" aria-disabled="true" href="#scr-01">Send</a></div></div>
+    </div>
+    <div class="pane right">
+      <div class="rhead"><span class="chip mute"><i></i>No request yet</span><span style="flex:1"></span><a class="btn primary" aria-disabled="true" href="#scr-01">Export</a></div>
+      <div class="empty">The request type and line items appear here after you send.</div>
+    </div>
+  </div>
+</div></div>
+
+<div class="state-label">State: loading — request type shown (within 5 s), line items being extracted (polling every 2 s)</div>
+<div class="frame-wrap short"><div class="frame short">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid" style="height:544px">
+    <div class="pane left">
+      <div class="chat">
+        <div class="bubble user"><div class="who">You · M1</div>Could you update PIR data as below part, I attached supplier quotation<pre>18570  1038-967-34  RAIL-DIN 35MM X 7.5MM X 450MM LG  3300  S33  KR  7  1  7,000  KRW  1  EA  2025-11-26
+18570  1038-967-04  RAIL-DIN 35MM X 7.5MM X 75MM LG   3300  S33  KR  7  1  7,000  KRW  1  EA  2025-11-26</pre></div>
+        <span class="attcard"><span class="thumb"></span><span><span class="nm">BE25112601_RAIL-DIN 35MM X 7.5MM.pdf</span><br><span class="sub">1 page · </span><span class="chip mute"><i></i>Reading…</span></span></span>
+      </div>
+      <div class="composer"><div class="textarea">Type a message…</div>
+        <div class="row"><a class="btn outline sm" href="#scr-01">Attach files</a><span class="counter">0 / 20000</span><a class="btn primary" aria-disabled="true" href="#scr-01">Send</a></div></div>
+    </div>
+    <div class="pane right">
+      <div class="rhead"><span class="select"><b>Update PIR</b> ▾</span><span class="hint">Reading the request and the quotation…</span><span style="flex:1"></span><a class="btn primary" aria-disabled="true" href="#scr-01">Export</a></div>
+      <div class="card"><div class="skel w40"></div><div class="skel w80"></div><div class="skel w60"></div><div class="skel w80"></div></div>
+      <div class="card" style="margin-top:12px"><div class="skel w40"></div><div class="skel w80"></div><div class="skel w60"></div></div>
+    </div>
+  </div>
+</div></div>
+<p class="hint">After 120 s of extracting, the hint changes to “Still working on a large request…” and polling continues.</p>
+
+<div class="state-label">State: not a PIR/SL request — nothing extracted</div>
+<div class="frame-wrap short"><div class="frame short">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid" style="height:544px">
+    <div class="pane left">
+      <div class="chat">
+        <div class="bubble user"><div class="who">You · M1</div>Thanks for your help last week!</div>
+        <div class="bubble assistant"><div class="who">Assistant · M2</div>This is not a PIR or Source List request, so nothing was extracted.</div>
+      </div>
+      <div class="composer"><div class="textarea">Type a message…</div>
+        <div class="row"><a class="btn outline sm" href="#scr-01">Attach files</a><span class="counter">0 / 20000</span><a class="btn primary" aria-disabled="true" href="#scr-01">Send</a></div></div>
+    </div>
+    <div class="pane right">
+      <div class="rhead"><span class="chip warn"><i></i>Not a PIR/SL request</span><span style="flex:1"></span><a class="btn primary" aria-disabled="true" href="#scr-01">Export</a></div>
+      <div class="empty">Nothing was extracted.</div>
+    </div>
+  </div>
+</div></div>
+
+<div class="state-label">State: error — unsupported file and a failed extraction (input kept)</div>
+<div class="frame-wrap short"><div class="frame short">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid" style="height:544px">
+    <div class="pane left">
+      <div class="chat">
+        <div class="bubble user"><div class="who">You · M1</div>Please create PIR and SL for 3 parts, see quotation.</div>
+        <span class="attcard"><span class="thumb"></span><span><span class="nm">quotation_scan.pdf</span><br><span class="sub">2 pages · </span><span class="chip err"><i></i>Could not be read</span></span></span>
+      </div>
+      <div class="composer"><div class="textarea filled">Please create PIR and SL for 3 parts, see quotation.</div>
+        <div class="err-inline">Only PDF, PNG and JPG files are supported <a class="btn ghost sm" href="#scr-01">Dismiss</a></div>
+        <div class="row"><a class="btn outline sm" href="#scr-01">Attach files</a><span class="counter">52 / 20000</span><a class="btn primary" href="#scr-01">Send</a></div></div>
+    </div>
+    <div class="pane right">
+      <div class="rhead"><span class="select"><b>Create PIR and SL</b> ▾</span><span style="flex:1"></span><a class="btn primary" aria-disabled="true" href="#scr-01">Export</a></div>
+      <div class="card"><b>The line items could not be extracted:</b> The AI service did not answer within 60 seconds.<div class="row"><a class="btn ghost sm" href="#scr-01">Send again</a></div></div>
+    </div>
+  </div>
+</div></div>
+
+<div class="state-label">State: success — correction applied by chat (“line 2 amount is 8000”) and a direct edit in progress</div>
+<div class="frame-wrap short"><div class="frame short">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid" style="height:544px">
+    <div class="pane left">
+      <div class="chat">
+        <div class="bubble assistant"><div class="who">Assistant · M2</div>Request type: <b>Update PIR</b>. Found 2 line items.</div>
+        <div class="bubble user"><div class="who">You · M3</div><mark>line 2 amount is 8000</mark></div>
+        <div class="bubble assistant"><div class="who">Assistant · M4</div>Changed line 2 Amount: 7000 → 8000.</div>
+        <div class="bubble user"><div class="who">You · M5</div>change it</div>
+        <div class="bubble assistant"><div class="who">Assistant · M6</div>Which line and which field should I change, and to what value?</div>
+      </div>
+      <div class="composer"><div class="textarea">Type a message…</div>
+        <div class="row"><a class="btn outline sm" href="#scr-01">Attach files</a><span class="counter">0 / 20000</span><a class="btn primary" aria-disabled="true" href="#scr-01">Send</a></div></div>
+    </div>
+    <div class="pane right">
+      <div class="rhead"><span class="select"><b>Update PIR</b> ▾</span><span class="hint">2 line items</span><span style="flex:1"></span><a class="btn primary" href="#scr-03">Export</a></div>
+      <div class="card">
+        <div class="ch"><b>Line 2 · PIR · Update</b><span class="sp"></span><a class="btn ghost sm" href="#scr-01">Remove line</a></div>
+        <div class="fields">
+          <div class="f"><span class="l">Supplier</span><span class="v mono">18570<span class="src"></span></span></div>
+          <div class="f"><span class="l">Vendor Material No.</span><span class="v mono">1038-967-04<span class="src"></span></span></div>
+          <div class="f"><span class="l">Plant</span><span class="v"><span class="editing num">3300|</span><span class="hint">Enter to save · Esc to cancel</span></span></div>
+          <div class="f"><span class="l">Purchasing Org.</span><span class="v num">3300<span class="src"></span></span></div>
+          <div class="f"><span class="l">Amount</span><span class="v num">8000 <span class="chip ok"><i></i>Corrected</span><span class="src" title="Source: message M3"></span></span></div>
+          <div class="f"><span class="l">Cond. Currency</span><span class="v">KRW<span class="src"></span></span></div>
+        </div>
+      </div>
+      <div class="toast">Line 2 Amount corrected</div>
+    </div>
+  </div>
+</div></div>
+<p class="hint">A corrected value keeps its “Corrected” chip and is never overwritten by a later extraction; its source is the chat message (M3) or “Edited by the steward”.</p>
+
+<div class="state-label">State: session ended (app restarted or 8 h idle)</div>
+<div class="frame-wrap short"><div class="frame short">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="center">Your session ended; start a new request<a class="btn primary" href="#scr-01">New request</a></div>
+</div></div>
+
+<!-- ================= SCR-02 ================= -->
+<h2 id="scr-02">SCR-02 — Attachment viewer (opens in the left pane above the chat)</h2>
+<div class="note">
+<b>User:</b> steward. <b>Primary job:</b> see why the AI chose a value — the page, the yellow box around the text, and the message span — without leaving the result.
+<b>User stories:</b> US-6 source per value (message or attachment page, text, box); US-7 click-to-evidence, several sources boxed, computed values show the computation; US-8 both sides of a conflict visible at once.
+<b>Features:</b> v2/F-08. Boxes are percentages of the rendered page image, so they stay on the text at 50 %, 100 % and 200 % zoom (PRD §7).
+</div>
+
+<div class="state-label">State: default — “Show source” on Amount line 1: popover with two sources; viewer open on page 1; the message span marked</div>
+<div class="frame-wrap"><div class="frame">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid">
+    <div class="pane left">
+      <div class="viewer">
+        <div class="vh"><b>BE25112601_RAIL-DIN 35MM X 7.5MM.pdf</b> · page 1 of 1<span class="sp"></span><a class="btn ghost sm" href="#scr-02">Previous</a><a class="btn ghost sm" href="#scr-02">Next</a><span class="seg"><span>50 %</span><span class="on">100 %</span><span>200 %</span></span><a class="btn outline sm" href="#scr-01">Close</a></div>
+        <div class="vbody">
+          <div class="page">
+            <div class="t" style="top:8%"></div><div class="t" style="top:12%;right:40%"></div>
+            <div style="position:absolute;right:10%;top:7%;font-size:10px;font-weight:600;color:var(--asm-ink)">QUOTATION</div>
+            <div style="position:absolute;left:10%;top:18%;color:var(--asm-ink)">Quotation No. BE25112601 &nbsp; Date 2025-11-26</div>
+            <div class="tbl">
+              <div><span>Part</span><span>Description</span><span>Qty</span><span>UoM</span><span>Price</span><span>Curr</span></div>
+              <div><span>1038-967-34</span><span>RAIL-DIN 35MM X 7.5MM X 450MM LG</span><span>1</span><span>EA</span><span>7,000</span><span>KRW</span></div>
+              <div><span>1038-967-04</span><span>RAIL-DIN 35MM X 7.5MM X 75MM LG</span><span>1</span><span>EA</span><span>7,000</span><span>KRW</span></div>
+            </div>
+            <div class="box" style="left:66%;top:36.5%;width:12%;height:4%"><label>7,000</label></div>
+            <div style="position:absolute;left:8%;top:50%;color:var(--asm-ink)">Country of origin: DE</div>
+            <div style="position:absolute;left:8%;top:53%;color:var(--asm-ink)">Lead time: 1 week</div>
+            <div style="position:absolute;left:8%;top:56%">Delivery EXW</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat" style="height:268px">
+        <div class="bubble user"><div class="who">You · M1</div>Could you update PIR data as below part, I attached supplier quotation<pre>18570  1038-967-34  RAIL-DIN 35MM X 7.5MM X 450MM LG  3300  S33  KR  7  1  <mark>7,000</mark>  KRW  1  EA  2025-11-26</pre></div>
+      </div>
+      <div class="composer"><div class="textarea">Type a message…</div></div>
+    </div>
+    <div class="pane right">
+      <div class="rhead"><span class="select"><b>Update PIR</b> ▾</span><span class="hint">2 line items</span><span style="flex:1"></span><a class="btn primary" href="#scr-03">Export</a></div>
+      <div class="card" style="position:relative">
+        <div class="ch"><b>Line 1 · PIR · Update</b></div>
+        <div class="fields">
+          <div class="f"><span class="l">C/R. of Origin</span><span class="v">KR <span class="chip warn"><i></i>Conflict</span><span class="src"></span></span></div>
+          <div class="f"><span class="l">Pl. Deliv. Time</span><span class="v num">7 d (1.0 wk) <span class="calc">calc</span><span class="src"></span></span></div>
+          <div class="f"><span class="l">Amount</span><span class="v num">7000<span class="src" style="outline:3px solid var(--asm-blue);outline-offset:1px"></span></span></div>
+          <div class="f"><span class="l">Cond. Currency</span><span class="v">KRW<span class="src"></span></span></div>
+        </div>
+        <div class="popover" style="right:24px;top:92px">
+          <div class="hint" style="margin-bottom:4px">Sources of Amount · line 1</div>
+          <div class="r"><span>Message M1 — “7,000”</span><span class="sp"></span><a class="btn ghost sm" href="#scr-02">Go to</a></div>
+          <div class="r"><span>BE25112601_RAIL-DIN 35MM X 7.5MM.pdf · page 1 — “7,000”</span><span class="sp"></span><a class="btn ghost sm" href="#scr-02">Go to</a></div>
+          <div class="r"><span class="sp"></span><a class="btn outline sm" href="#scr-02">Show all</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<p class="hint">Conflict (C/R. of Origin): “Show all” marks <b>KR</b> in M1 and boxes <b>DE</b> on the page at the same time. Computed (Pl. Deliv. Time from the quotation): the popover adds the row “Calculated: 1 week × 7” and the box surrounds “1 week”. A chat correction lists “Message M3 — line 2 amount is 8000”; a direct edit lists “Edited by the steward” without “Go to”.</p>
+
+<div class="state-label">State: loading — page image not yet loaded</div>
+<div class="frame-wrap short"><div class="frame short">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid" style="height:544px">
+    <div class="pane left">
+      <div class="viewer" style="height:544px">
+        <div class="vh"><b>BE25112601_RAIL-DIN 35MM X 7.5MM.pdf</b> · page 1 of 1<span class="sp"></span><span class="seg"><span>50 %</span><span class="on">100 %</span><span>200 %</span></span><a class="btn outline sm" href="#scr-01">Close</a></div>
+        <div class="vbody"><div class="page" style="background:var(--asm-mist);border-color:var(--asm-mist)"></div></div>
+      </div>
+    </div>
+    <div class="pane right"><div class="rhead"><span class="select"><b>Update PIR</b> ▾</span><span class="hint">2 line items</span></div><div class="card"><div class="skel w60"></div><div class="skel w80"></div></div></div>
+  </div>
+</div></div>
+
+<div class="state-label">State: page unreadable — the parser returned no text for this page</div>
+<div class="frame-wrap short"><div class="frame short">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid" style="height:544px">
+    <div class="pane left">
+      <div class="viewer" style="height:544px">
+        <div class="vh"><b>quotation_scan.pdf</b> · page 2 of 2<span class="sp"></span><a class="btn ghost sm" href="#scr-02">Previous</a><a class="btn ghost sm" href="#scr-02">Next</a><span class="seg"><span>50 %</span><span class="on">100 %</span><span>200 %</span></span><a class="btn outline sm" href="#scr-01">Close</a></div>
+        <div class="card" style="margin:12px 16px;border-color:var(--asm-warn)"><span class="chip warn"><i></i>Unreadable</span> This page could not be read; the values here were typed or come from the message.</div>
+        <div class="vbody"><div class="page"><div class="t" style="top:20%"></div><div class="t" style="top:26%"></div><div class="t" style="top:32%;right:50%"></div></div></div>
+      </div>
+    </div>
+    <div class="pane right"><div class="rhead"><span class="select"><b>Create PIR and SL</b> ▾</span><span class="hint">6 line items</span></div></div>
+  </div>
+</div></div>
+
+<!-- ================= SCR-03 ================= -->
+<h2 id="scr-03">SCR-03 — Export dialog</h2>
+<div class="note">
+<b>User:</b> steward. <b>Primary job:</b> take the reviewed line items into the next step (manual SAP entry) as JSON or CSV with the PRD field names. <b>User story:</b> US-10. <b>Feature:</b> v2/F-07. Nothing is sent to SAP.
+</div>
+
+<div class="state-label">State: default — CSV selected, preview of the first lines</div>
+<div class="frame-wrap"><div class="frame">
+  <div class="hdr"><span class="brand">ASM</span><span class="app">PIR / SL request chat</span><span class="spacer"></span><span class="user">steward · SCO Procurement Data</span><button class="ghost">New request</button></div>
+  <div class="grid">
+    <div class="pane left"><div class="chat"><div class="bubble assistant"><div class="who">Assistant · M2</div>Request type: <b>Update PIR</b>. Found 2 line items.</div></div><div class="composer"><div class="textarea">Type a message…</div></div></div>
+    <div class="pane right"><div class="rhead"><span class="select"><b>Update PIR</b> ▾</span><span class="hint">2 line items</span></div><div class="card"><div class="skel w60"></div><div class="skel w80"></div><div class="skel w40"></div></div></div>
+  </div>
+  <div class="scrim">
+    <div class="modal">
+      <h3>Export reviewed line items</h3>
+      <div class="radio"><span><i></i>JSON</span><span><i class="on"></i>CSV</span></div>
+      <div class="pre">line_no,doc_type,action,supplier,material,vendor_material_no,plant,purchasing_org,country_of_origin,lead_time_days,standard_qty,amount,currency,pricing_unit,unit_of_measure,valid_from,valid_to,fixed_vendor
+1,PIR,update,18570,1038-967-34,RAIL-DIN 35MM X 7.5MM X 450MM LG,,3300,KR,7,1,7000,KRW,1,EA,2025-11-26,,
+2,PIR,update,18570,1038-967-04,RAIL-DIN 35MM X 7.5MM X 75MM LG,,3300,KR,7,1,8000,KRW,1,EA,2025-11-26,,</div>
+      <p class="hint">File sco_request_3f9a1c2e.csv · 2 lines · corrected values included · nothing is sent to SAP</p>
+      <div class="row"><a class="btn ghost" href="#scr-01">Close</a><a class="btn outline" href="#scr-03">Copy</a><a class="btn primary" href="#scr-01">Download</a></div>
+    </div>
+  </div>
+</div></div>
+<p class="hint">Success: toast “Copied” after Copy; the browser download after Download. Error: “Copy failed; use Download”. Export is disabled until a result exists (tooltip “Send the request first”).</p>
+
+<p class="meta">End of wireframe. Review with TSD-SCO-001 §4 (screens) and FEATURES_V2 (F-06 … F-08). Status: Draft.</p>
+</div>
+</body>
+</html>
