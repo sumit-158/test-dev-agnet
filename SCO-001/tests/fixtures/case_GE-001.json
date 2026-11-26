@@ -1,0 +1,13 @@
+{
+  "case_id": "GE-001",
+  "title": "Urgent-SCO_Request to update PIR data_Fusion_Best",
+  "expected_request_type": "update_pir",
+  "expected_line_items": [
+    {"doc_type": "PIR", "action": "update", "fields": {"supplier": "18570", "material": "1038-967-34", "vendor_material_no": "RAIL-DIN 35MM X 7.5MM X 450MM LG", "plant": null, "purchasing_org": "3300", "country_of_origin": "KR", "lead_time_days": "7", "standard_qty": "1", "amount": "7000", "currency": "KRW", "pricing_unit": "1", "unit_of_measure": "EA", "valid_from": "2025-11-26", "valid_to": null}},
+    {"doc_type": "PIR", "action": "update", "fields": {"supplier": "18570", "material": "1038-967-04", "vendor_material_no": "RAIL-DIN 35MM X 7.5MM X 75MM LG", "plant": null, "purchasing_org": "3300", "country_of_origin": "KR", "lead_time_days": "7", "standard_qty": "1", "amount": "7000", "currency": "KRW", "pricing_unit": "1", "unit_of_measure": "EA", "valid_from": "2025-11-26", "valid_to": null}}
+  ],
+  "expected_source_segments": {"1.amount": ["M"], "1.country_of_origin": ["M"], "2.amount": ["M"]},
+  "tags": ["golden", "demo", "conflict", "computed"],
+  "is_synthetic": false,
+  "notes": "PRD section 6. S33 is a purchasing group and must not be purchasing_org. Quotation may state DE as origin: conflict expected, KR wins."
+}
