@@ -1,0 +1,38 @@
+[
+  {
+    "file_name": "p001.png",
+    "parsed": {
+      "document": {
+        "pages": [{"id": 0, "image_uri": null}],
+        "elements": [
+          {
+            "id": 0,
+            "type": "text",
+            "content": "Amount 7,000 KRW",
+            "bbox": [{"coord": [100, 200, 520, 240], "page_id": 0}]
+          }
+        ]
+      },
+      "error_status": null,
+      "metadata": {"version": "2.0"}
+    }
+  },
+  {
+    "file_name": "p002.png",
+    "parsed": {
+      "document": {
+        "pages": [{"id": 0, "image_uri": null}],
+        "elements": [
+          {
+            "id": 0,
+            "type": "text",
+            "content": "Country of origin: DE",
+            "bbox": [{"coord": [100, 300, 560, 340], "page_id": 0}]
+          }
+        ]
+      },
+      "error_status": null,
+      "metadata": {"version": "2.0"}
+    }
+  }
+]
