@@ -1,0 +1,4 @@
+Could you update PIR data as below part, I attached supplier quotation
+Supplier	Vendor Material No.	Material	Prog.	Pur. Grp	C/R. of Origin	Pl. Deliv. Time	Standard Qty	Amount	Cond. Currency	Pricing Unit	Unit of Measure	Valid-From Date
+18570	1038-967-34	RAIL-DIN 35MM X 7.5MM X 450MM LG	3300	S33	KR	7	1	7,000	KRW	1	EA	2025-11-26
+18570	1038-967-04	RAIL-DIN 35MM X 7.5MM X 75MM LG	3300	S33	KR	7	1	7,000	KRW	1	EA	2025-11-26
