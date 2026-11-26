@@ -41,6 +41,10 @@ targets:
     # Workspace host is taken from the DATABRICKS_HOST environment variable (not hard-coded).
     mode: development
     default: true
+    # Dev workspace ids: Serverless Starter Warehouse and experiment /Shared/SCO-001/pir_sl_chat.
+    variables:
+      warehouse_id: 0311a41d65a98815
+      experiment_id: "1141133459654671"
   prod:
     # Declared only; not deployed in the PoC (TSD §10). Deploy only from main.
     mode: production

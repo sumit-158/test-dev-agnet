@@ -27,15 +27,23 @@ The app fails at start-up with `Missing required setting <KEY>` when a required 
 The workspace host is read from `DATABRICKS_HOST`; authenticate with the Databricks CLI first.
 
 ```bash
-# variables can also be set with: export BUNDLE_VAR_warehouse_id=<warehouse id> BUNDLE_VAR_experiment_id=<experiment id>
-databricks bundle validate -t dev --var warehouse_id=<warehouse id> --var experiment_id=<experiment id>
-databricks bundle deploy -t dev --var warehouse_id=<warehouse id> --var experiment_id=<experiment id>
+databricks bundle validate -t dev
+databricks bundle deploy -t dev
 ```
 
-Variables: `warehouse_id` is the id of the shared serverless SQL warehouse (app resource
-`sql-warehouse`, CAN USE); `experiment_id` is the id of the MLflow experiment
-`/Shared/SCO-001/pir_sl_chat` (app resource `experiment`, CAN EDIT). The app also gets
-WRITE VOLUME on `sandbox_others.sco_001_poc.uploads` (app resource `uc-volume`).
+Dev uses the Serverless Starter Warehouse (app resource `sql-warehouse`, CAN USE) and the MLflow
+experiment `/Shared/SCO-001/pir_sl_chat` (app resource `experiment`, CAN EDIT); their ids are set
+in `databricks.yml` under `targets.dev.variables` (`warehouse_id`, `experiment_id`). The app also
+gets WRITE VOLUME on `sandbox_others.sco_001_poc.uploads` (app resource `uc-volume`).
+
+To override the ids, pass `--var` or set `BUNDLE_VAR_*`:
+
+```bash
+databricks bundle validate -t dev --var warehouse_id=$WAREHOUSE_ID --var experiment_id=$EXPERIMENT_ID
+# or
+export BUNDLE_VAR_warehouse_id=$WAREHOUSE_ID BUNDLE_VAR_experiment_id=$EXPERIMENT_ID
+databricks bundle validate -t dev
+```
 
 The `prod` target is declared but not deployed in the PoC.
 
